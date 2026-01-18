@@ -26,6 +26,43 @@ body {
 }
 
 .navbar a:hover {
+  background-color: #f6fafd;
+  color: #1a3d63;
+}
+
+.btn{
   background-color: #f0f0f0;
   color: #1a3d63;
-}   
+  border: none;
+  padding: 8px 16px;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #f6fafd;
+}
+
+.about-me {
+  color: white;
+  padding: 0 30px;
+  padding-bottom: 10px;
+  background-color: #1a3d63;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+.About-section h1 {
+  margin-top: 0;
+}
+
+.About-section p {
+  line-height: 1.6;
+    width: 450px;
+}
+
+.about-image {
+  width: 100px;
+}
