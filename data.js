@@ -76,7 +76,7 @@ const portfolioData = {
           techStack: ["React", "TypeScript", "Node.js", "PostgreSQL", "WebSocket", "Redux"],
           links: [
             { type: "github", url: "https://github.com/MedoMaher01/task-manager", label: "View Code" },
-            { type: "linkedin", url: "https://linkedin.com/posts/your-post", label: "Case Study" }
+            { type: "linkedin", url: "https://linkedin.com/in/0xmaro", label: "LinkedIn Profile" }
           ],
           icon: "Image/Logo.png"
         },
@@ -194,7 +194,7 @@ const portfolioData = {
       date: "2018 - 2022",
       title: "Bachelor's Degree in Computer Science",
       category: "education",
-      description: "Pursued degree in Computer Science at [University Name]. Studied data structures, algorithms, web development, and software engineering principles. Graduated with honors.",
+      description: "Pursued degree in Computer Science. Studied data structures, algorithms, web development, and software engineering principles. Graduated with honors.",
       icon: "🎓"
     },
     {
@@ -209,7 +209,7 @@ const portfolioData = {
       date: "2021",
       title: "Software Development Internship",
       category: "career",
-      description: "Completed internship at [Company Name] where I worked on real-world projects, collaborated with experienced developers, and learned industry best practices.",
+      description: "Completed internship where I worked on real-world projects, collaborated with experienced developers, and learned industry best practices.",
       icon: "💼"
     },
     {
@@ -228,7 +228,7 @@ const portfolioData = {
       date: "2022 - 2024",
       title: "Junior Developer Position",
       category: "career",
-      description: "Joined [Company Name] as a Junior Developer. Contributed to multiple client projects, improved application performance, and mentored new team members.",
+      description: "Joined as a Junior Developer. Contributed to multiple client projects, improved application performance, and mentored new team members.",
       icon: "🚀"
     },
     {

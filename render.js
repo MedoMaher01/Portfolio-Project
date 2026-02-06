@@ -309,7 +309,7 @@ function renderProjectsByCategory() {
     <section class="projects-cta">
       <h2>Interested in collaborating?</h2>
       <p>Let's build something amazing together</p>
-      <a href="Index.html#contact">
+      <a href="index.html#contact">
         <button class="btn btn-primary">
           <span>Get In Touch</span>
         </button>
