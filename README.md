@@ -149,10 +149,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👤 Author
 
-**[Your Name]**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
-- Email: your-email@example.com
+**Ahmed Maher**
+- GitHub: [@MedoMaher01](https://github.com/MedoMaher01)
+- LinkedIn: [0xmaro](https://linkedin.com/in/0xmaro)
+- Email: anshtaun00@gmail.com
 
 ## 🙏 Acknowledgments
 
