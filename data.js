@@ -9,11 +9,11 @@ const portfolioData = {
   // PERSONAL INFORMATION
   // ========================================
   personal: {
-    name: "Ahmed Maher Ramadan",
-    profession: "[Your Profession]",
-    tagline: "[Your Specializations]",
-    background: "[Your Background]",
-    bio: "Hello! I'm Ahmed Maher Ramadan, a passionate [Your Profession] with a love for creating innovative solutions. With a background in [Your Background], I specialize in [Your Specializations]. My goal is to leverage technology to make a positive impact and drive progress in the industry.",
+    name: "Ahmed Maher",
+    profession: "Software Developer",
+    tagline: "Full-Stack Development & Web Solutions",
+    background: "Computer Science & Software Engineering",
+    bio: "Hello! I'm Ahmed Maher, a passionate Software Developer with a love for creating innovative solutions. With a background in Computer Science & Software Engineering, I specialize in Full-Stack Development & Web Solutions. My goal is to leverage technology to make a positive impact and drive progress in the industry.",
     
     // Images
     logo: "Image/Logo Without BG.png",
@@ -22,12 +22,12 @@ const portfolioData = {
     // Contact & Social
     email: "anshtaun00@gmail.com",
     github: "MedoMaher01",
-    linkedin: "x0maro",
+    linkedin: "0xmaro",
     
     // SEO
     siteUrl: "https://yourwebsite.com",
-    description: "Professional portfolio of Ahmed Maher Ramadan, a passionate [Your Profession] specializing in [Your Specializations].",
-    keywords: "portfolio, web developer, projects, Ahmed Maher Ramadan, [Your Profession]"
+    description: "Professional portfolio of Ahmed Maher, a passionate Software Developer specializing in Full-Stack Development & Web Solutions.",
+    keywords: "portfolio, web developer, projects, Ahmed Maher, Software Developer, Full-Stack Development"
   },
 
   // ========================================
