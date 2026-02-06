@@ -22,7 +22,7 @@ const portfolioData = {
     // Contact & Social
     email: "anshtaun00@gmail.com",
     github: "MedoMaher01",
-    linkedin: "0xmaro",
+    linkedin: "x0maro",
     
     // SEO
     siteUrl: "https://yourwebsite.com",
@@ -76,7 +76,7 @@ const portfolioData = {
           techStack: ["React", "TypeScript", "Node.js", "PostgreSQL", "WebSocket", "Redux"],
           links: [
             { type: "github", url: "https://github.com/MedoMaher01/task-manager", label: "View Code" },
-            { type: "linkedin", url: "https://linkedin.com/in/0xmaro", label: "LinkedIn Profile" }
+            { type: "linkedin", url: "https://linkedin.com/in/x0maro", label: "LinkedIn Profile" }
           ],
           icon: "Image/Logo.png"
         },

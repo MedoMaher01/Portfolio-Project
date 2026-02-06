@@ -151,7 +151,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Ahmed Maher**
 - GitHub: [@MedoMaher01](https://github.com/MedoMaher01)
-- LinkedIn: [0xmaro](https://linkedin.com/in/0xmaro)
+- LinkedIn: [x0maro](https://linkedin.com/in/x0maro)
 - Email: anshtaun00@gmail.com
 
 ## 🙏 Acknowledgments
