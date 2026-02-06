@@ -125,6 +125,44 @@
   }
 }
 
+/* Timeline Event */
+.timeline-event {
+  position: relative;
+  background: linear-gradient(135deg, rgba(26, 61, 99, 0.95) 0%, rgba(45, 90, 138, 0.95) 100%);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-2xl);
+  border-left: 4px solid var(--color-accent);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(10px);
+  transition: all var(--transition-base);
+  animation: slideInLeft 0.6s ease-out;
+}
+
+/* Light mode timeline events */
+[data-theme="light"] .timeline-event {
+  background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+  border-left: 4px solid #4a90e2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .timeline-event h3 {
+  color: #1a3d63;
+}
+
+[data-theme="light"] .timeline-event .event-date {
+  color: #666;
+}
+
+[data-theme="light"] .timeline-event .event-description {
+  color: #444;
+}
+
+[data-theme="light"] .timeline-event .event-tags span {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
 /* Timeline Content Card */
 .timeline-content {
   background: linear-gradient(135deg, rgba(11, 26, 48, 0.9) 0%, rgba(19, 42, 74, 0.9) 100%);

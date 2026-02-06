@@ -109,7 +109,7 @@ function renderFeaturedProjects() {
   const featured = allProjects.slice(0, 5);
   
   container.innerHTML = featured.map(project => `
-    <a href="projects.html#project-${project.id}" class="project-card" role="listitem" aria-label="View ${project.title} project">
+    <a href="project.html?id=${project.id}" class="project-card" role="listitem" aria-label="View ${project.title} project">
       <div class="card-icon" aria-hidden="true">
         <img src="${project.icon}" alt="" />
       </div>
@@ -401,6 +401,10 @@ function renderProjectCard(project, categoryKey) {
         
         <div class="project-links">
           ${linksHTML}
+          <a href="project.html?id=${project.id}" class="project-btn btn-view-details">
+            <span class="btn-icon">📖</span>
+            <span>View Full Details</span>
+          </a>
         </div>
       </div>
     </article>
@@ -446,14 +450,31 @@ function initializeProjectAnimations() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('animate-in');
+        entry.target.classList.add('animate');
       }
     });
   }, observerOptions);
   
-  document.querySelectorAll('.project-detail').forEach(project => {
-    observer.observe(project);
+  document.querySelectorAll('.project-detail').forEach(card => {
+    observer.observe(card);
   });
+}
+
+// Initialize all components when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializePage);
+} else {
+  initializePage();
+}
+
+function initializePage() {
+  // Initialize mobile navigation
+  initializeMobileNav();
+  
+  // Initialize project detail page if on that page
+  if (window.location.pathname.includes('project.html')) {
+    renderProjectDetailPage();
+  }
 }
 
 // ========================================
@@ -496,4 +517,230 @@ function initializeMobileNav() {
       }
     });
   });
+}
+
+// ========================================
+// PROJECT DETAIL PAGE RENDERING
+// ========================================
+
+function renderProjectDetailPage() {
+  // Get project ID from URL parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const projectId = urlParams.get('id');
+  
+  if (!projectId) {
+    // No project ID provided, redirect to projects list
+    window.location.href = 'projects.html';
+    return;
+  }
+  
+  const project = getProjectById(projectId);
+  
+  if (!project) {
+    // Project not found, redirect to projects list
+    window.location.href = 'projects.html';
+    return;
+  }
+  
+  // Update page title and meta tags
+  document.title = `${project.title} - ${portfolioData.personal.name} Portfolio`;
+  updateMetaTag('description', project.description);
+  updateMetaTag('og:title', `${project.title} - Portfolio Project`, 'property');
+  updateMetaTag('og:description', project.description, 'property');
+  
+  // Render breadcrumb
+  document.getElementById('project-title-breadcrumb').textContent = project.title;
+  
+  // Render header
+  document.getElementById('project-title').textContent = project.title;
+  document.getElementById('project-subtitle').textContent = project.subtitle;
+  
+  // Render meta information
+  renderProjectMeta(project);
+  
+  // Render project links
+  renderProjectLinks(project);
+  
+  // Render description
+  const descriptionElement = document.getElementById('project-description');
+  descriptionElement.innerHTML = project.fullDescription || project.description;
+  
+  // Render gallery (if exists)
+  if (project.gallery && project.gallery.length > 0) {
+    renderProjectGallery(project.gallery);
+  }
+  
+  // Render features (if exists)
+  if (project.features && project.features.length > 0) {
+    renderProjectFeatures(project.features);
+  }
+  
+  // Render tech stack
+  renderProjectTechStack(project.techStack);
+  
+  // Render challenges and learnings (if exist)
+  renderProjectInsights(project);
+  
+  // Setup navigation
+  setupProjectNavigation(projectId);
+  
+  // Render common elements
+  renderHeader();
+  renderFooter();
+}
+
+function renderProjectMeta(project) {
+  const metaContainer = document.getElementById('project-meta');
+  const metaItems = [];
+  
+  if (project.duration) {
+    metaItems.push(`<div class="meta-item"><strong>Duration:</strong> ${project.duration}</div>`);
+  }
+  
+  if (project.role) {
+    metaItems.push(`<div class="meta-item"><strong>Role:</strong> ${project.role}</div>`);
+  }
+  
+  if (project.teamSize) {
+    metaItems.push(`<div class="meta-item"><strong>Team:</strong> ${project.teamSize}</div>`);
+  }
+  
+  if (project.status) {
+    metaItems.push(`<div class="meta-item"><strong>Status:</strong> ${project.status}</div>`);
+  }
+  
+  if (metaItems.length > 0) {
+    metaContainer.innerHTML = metaItems.join('');
+    metaContainer.style.display = 'flex';
+  } else {
+    metaContainer.style.display = 'none';
+  }
+}
+
+function renderProjectLinks(project) {
+  const linksContainer = document.getElementById('project-links');
+  
+  const linkTypeConfig = {
+    github: { icon: '📦', class: 'btn-github', defaultLabel: 'View Code' },
+    linkedin: { icon: '💼', class: 'btn-linkedin', defaultLabel: 'LinkedIn' },
+    demo: { icon: '🚀', class: 'btn-demo', defaultLabel: 'Live Demo' },
+    behance: { icon: '🎨', class: 'btn-behance', defaultLabel: 'View on Behance' },
+    pdf: { icon: '📄', class: 'btn-pdf', defaultLabel: 'Download PDF' },
+    drive: { icon: '☁️', class: 'btn-drive', defaultLabel: 'View on Drive' },
+    youtube: { icon: '📺', class: 'btn-youtube', defaultLabel: 'Watch Video' },
+    custom: { icon: '🔗', class: 'btn-custom', defaultLabel: 'View Link' }
+  };
+  
+  linksContainer.innerHTML = project.links.map(link => {
+    const config = linkTypeConfig[link.type] || linkTypeConfig.custom;
+    const label = link.label || config.defaultLabel;
+    
+    return `
+      <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="project-btn ${config.class}">
+        <span class="btn-icon">${config.icon}</span>
+        <span>${label}</span>
+      </a>
+    `;
+  }).join('');
+}
+
+function renderProjectGallery(gallery) {
+  const gallerySection = document.getElementById('gallery-section');
+  const galleryContainer = document.getElementById('project-gallery');
+  
+  galleryContainer.innerHTML = gallery.map(item => {
+    if (item.type === 'image') {
+      return `
+        <figure class="gallery-item">
+          <img src="${item.url}" alt="${item.caption || 'Project image'}" loading="lazy">
+          ${item.caption ? `<figcaption>${item.caption}</figcaption>` : ''}
+        </figure>
+      `;
+    } else if (item.type === 'youtube') {
+      return `
+        <div class="gallery-item video">
+          <iframe 
+            src="${item.url}" 
+            title="${item.caption || 'Project video'}"
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+          ${item.caption ? `<p>${item.caption}</p>` : ''}
+        </div>
+      `;
+    }
+    return '';
+  }).join('');
+  
+  gallerySection.style.display = 'block';
+}
+
+function renderProjectFeatures(features) {
+  const featuresSection = document.getElementById('features-section');
+  const featuresList = document.getElementById('project-features-list');
+  
+  featuresList.innerHTML = features.map(feature => 
+    `<li>${feature}</li>`
+  ).join('');
+  
+  featuresSection.style.display = 'block';
+}
+
+function renderProjectTechStack(techStack) {
+  const techStackContainer = document.getElementById('project-tech-stack');
+  
+  techStackContainer.innerHTML = techStack.map(tech =>
+    `<span class="tech-badge">${tech}</span>`
+  ).join('');
+}
+
+function renderProjectInsights(project) {
+  const insightsSection = document.getElementById('insights-section');
+  let hasInsights = false;
+  
+  if (project.challenges) {
+    const challengesCard = document.getElementById('challenges-card');
+    document.getElementById('project-challenges').textContent = project.challenges;
+    challengesCard.style.display = 'block';
+    hasInsights = true;
+  }
+  
+  if (project.learnings) {
+    const learningsCard = document.getElementById('learnings-card');
+    document.getElementById('project-learnings').textContent = project.learnings;
+    learningsCard.style.display = 'block';
+    hasInsights = true;
+  }
+  
+  if (hasInsights) {
+    insightsSection.style.display = 'grid';
+  }
+}
+
+function setupProjectNavigation(currentProjectId) {
+  const allProjects = getAllProjects();
+  const currentIndex = allProjects.findIndex(p => p.id === currentProjectId);
+  
+  const prevBtn = document.getElementById('prev-project');
+  const nextBtn = document.getElementById('next-project');
+  
+  // Setup previous project button
+  if (currentIndex > 0) {
+    const prevProject = allProjects[currentIndex - 1];
+    prevBtn.href = `project.html?id=${prevProject.id}`;
+    prevBtn.style.display = 'inline-flex';
+  } else {
+    prevBtn.style.display = 'none';
+  }
+  
+  // Setup next project button
+  if (currentIndex < allProjects.length - 1) {
+    const nextProject = allProjects[currentIndex + 1];
+    nextBtn.href = `project.html?id=${nextProject.id}`;
+    nextBtn.style.display = 'inline-flex';
+  } else {
+    nextBtn.style.display = 'none';
+  }
 }

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Character Encoding & Viewport -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="Image/Logo Without BG.png" />
+    
+    <!-- SEO Meta Tags (Will be updated by JavaScript) -->
+    <title>Project Details - Portfolio</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+    <meta property="og:image" content="Image/Logo.png" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="" />
+    <meta property="twitter:title" content="" />
+    <meta property="twitter:description" content="" />
+    <meta property="twitter:image" content="Image/Logo.png" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="project-detail.css" />
+    
+    <!-- Data & Rendering Scripts -->
+    <script src="data.js"></script>
+    <script src="render.js"></script>
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CreativeWork"
+    }
+    </script>
+  </head>
+  
+  <body>
+    <!-- Header & Navigation -->
+    <header class="header-container" role="banner">
+      <nav aria-label="Logo navigation">
+        <a href="index.html" aria-label="Home">
+          <img src="Image/Logo Without BG.png" alt="Portfolio Logo" class="logo" />
+        </a>
+      </nav>
+      
+      <button class="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        ☰
+      </button>
+      
+      <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <ul>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="my-journey.html">My Journey</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="project-detail-page">
+      <!-- Breadcrumb Navigation -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a> / 
+        <a href="projects.html">Projects</a> / 
+        <span id="project-title-breadcrumb">...</span>
+      </nav>
+      
+      <!-- Project Header -->
+      <section class="project-header">
+        <h1 id="project-title">Loading...</h1>
+        <p id="project-subtitle" class="project-subtitle"></p>
+        
+        <div class="project-meta" id="project-meta">
+          <!-- Meta info will be loaded here -->
+        </div>
+        
+        <div id="project-links" class="project-links">
+          <!-- Links will be loaded here -->
+        </div>
+      </section>
+      
+      <!-- Project Content -->
+      <section class="project-content">
+        <!-- Main Description -->
+        <div class="project-section">
+          <h2>About This Project</h2>
+          <div class="project-description" id="project-description">
+            <p>Loading project details...</p>
+          </div>
+        </div>
+        
+        <!-- Gallery -->
+        <div class="project-section" id="gallery-section" style="display: none;">
+          <h2>Gallery</h2>
+          <div class="project-gallery" id="project-gallery"></div>
+        </div>
+        
+        <!-- Key Features -->
+        <div class="project-section" id="features-section" style="display: none;">
+          <h2>Key Features</h2>
+          <ul id="project-features-list" class="features-list"></ul>
+        </div>
+        
+        <!-- Technologies Used -->
+        <div class="project-section">
+          <h2>Technologies Used</h2>
+          <div id="project-tech-stack" class="tech-stack"></div>
+        </div>
+        
+        <!-- Challenges & Learnings -->
+        <div class="project-insights" id="insights-section" style="display: none;">
+          <div class="insight-card" id="challenges-card" style="display: none;">
+            <h3>🎯 Challenges</h3>
+            <p id="project-challenges"></p>
+          </div>
+          <div class="insight-card" id="learnings-card" style="display: none;">
+            <h3>💡 What I Learned</h3>
+            <p id="project-learnings"></p>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Project Navigation -->
+      <section class="project-navigation">
+        <a href="#" id="prev-project" class="nav-btn prev-btn" style="display: none;">
+          <span class="nav-icon">←</span>
+          <span class="nav-text">Previous Project</span>
+        </a>
+        <a href="projects.html" class="nav-btn back-btn">
+          <span class="nav-icon">📂</span>
+          <span class="nav-text">All Projects</span>
+        </a>
+        <a href="#" id="next-project" class="nav-btn next-btn" style="display: none;">
+          <span class="nav-text">Next Project</span>
+          <span class="nav-icon">→</span>
+        </a>
+      </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer id="contact" role="contentinfo">
+      <!-- Footer will be dynamically loaded here -->
+    </footer>
+    
+    <!-- Initialize Page -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        renderProjectDetailPage();
+        initializeMobileNav();
+      });
+    </script>
+  </body>
+</html>

@@ -302,7 +302,7 @@ function getProjectLink(projectId) {
   const project = getProjectById(projectId);
   if (!project) return null;
   return {
-    url: `projects.html#project-${projectId}`,
+    url: `project.html?id=${projectId}`,
     title: project.title
   };
 }
