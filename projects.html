@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Character Encoding & Viewport -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Projects - [Your Name]</title>
+    <meta name="description" content="Explore my portfolio of web development, mobile, and software projects. Each project showcases my skills and passion for creating innovative solutions." />
+    <meta name="author" content="[Your Name]" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="projects.css" />
+  </head>
+  
+  <body>
+    <!-- Header & Navigation -->
+    <header class="header-container" role="banner">
+      <nav aria-label="Logo navigation">
+        <a href="Index.html" aria-label="Home">
+          <img src="Image/Logo Without BG.png" alt="Portfolio Logo" class="logo" />
+        </a>
+      </nav>
+      
+      <button class="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        ☰
+      </button>
+      
+      <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <ul>
+          <li><a href="Index.html#about">About</a></li>
+          <li><a href="My Journey.html">My Journey</a></li>
+          <li><a href="Index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="projects-main">
+      
+      <!-- Hero Section -->
+      <section class="projects-hero">
+        <h1>My Projects</h1>
+        <p>A collection of work organized by skills and technologies</p>
+      </section>
+      
+      <!-- Filter/Category Navigation -->
+      <section class="category-filter">
+        <button class="filter-btn active" data-category="all">All Projects</button>
+        <button class="filter-btn" data-category="web">Web Development</button>
+        <button class="filter-btn" data-category="mobile">Mobile Apps</button>
+        <button class="filter-btn" data-category="fullstack">Full-Stack</button>
+        <button class="filter-btn" data-category="frontend">Frontend</button>
+        <button class="filter-btn" data-category="other">Other</button>
+      </section>
+      
+      <!-- Projects Container -->
+      <div class="projects-container">
+        
+        <!-- ======================================
+             WEB DEVELOPMENT PROJECTS
+             ====================================== -->
+        <section class="project-category" data-category="web frontend">
+          <h2 class="category-title">
+            <span class="category-icon">🌐</span>
+            Web Development
+          </h2>
+          
+          <!-- Project: Personal Portfolio -->
+          <article id="project-web-portfolio" class="project-detail" data-category="web frontend">
+            <div class="project-header">
+              <div class="project-icon">
+                <img src="Image/Logo.png" alt="Portfolio Website Icon" />
+              </div>
+              <div class="project-title-group">
+                <h3>Personal Portfolio Website</h3>
+                <p class="project-subtitle">Responsive portfolio showcasing skills and projects</p>
+              </div>
+            </div>
+            
+            <div class="project-content">
+              <p class="project-description">
+                A modern, fully responsive portfolio website built from scratch using HTML5, CSS3, and vanilla JavaScript. 
+                Features include an interactive timeline showcasing my professional journey, a projects gallery organized 
+                by skills, smooth scroll animations, and comprehensive SEO optimization. The design follows mobile-first 
+                principles with a focus on accessibility and user experience.
+              </p>
+              
+              <div class="tech-stack">
+                <span class="tech-badge">HTML5</span>
+                <span class="tech-badge">CSS3</span>
+                <span class="tech-badge">JavaScript</span>
+                <span class="tech-badge">Responsive Design</span>
+                <span class="tech-badge">SEO</span>
+              </div>
+              
+              <div class="project-links">
+                <a href="https://github.com/yourusername/portfolio" target="_blank" rel="noopener noreferrer" class="project-btn btn-github">
+                  <span>View on GitHub</span>
+                </a>
+                <a href="https://linkedin.com/posts/your-post" target="_blank" rel="noopener noreferrer" class="project-btn btn-linkedin">
+                  <span>LinkedIn Post</span>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="project-btn btn-demo">
+                  <span>Live Demo</span>
+                </a>
+              </div>
+            </div>
+          </article>
+          
+          <!-- Project: Blog Platform -->
+          <article id="project-blog" class="project-detail" data-category="web frontend fullstack">
+            <div class="project-header">
+              <div class="project-icon">
+                <img src="Image/Logo.png" alt="Blog Platform Icon" />
+              </div>
+              <div class="project-title-group">
+                <h3>Blog Platform with CMS</h3>
+                <p class="project-subtitle">Feature-rich blogging platform with content management</p>
+              </div>
+            </div>
+            
+            <div class="project-content">
+              <p class="project-description">
+                A comprehensive blog platform with a custom content management system. Features include markdown support 
+                for writing articles, rich text editor, comment system with moderation, user authentication, category 
+                and tag management, SEO-optimized URLs, and RSS feed generation. The platform is built with modern 
+                web technologies and follows best practices for performance and security.
+              </p>
+              
+              <div class="tech-stack">
+                <span class="tech-badge">React</span>
+                <span class="tech-badge">Node.js</span>
+                <span class="tech-badge">Express</span>
+                <span class="tech-badge">MongoDB</span>
+                <span class="tech-badge">Markdown</span>
+                <span class="tech-badge">JWT Auth</span>
+              </div>
+              
+              <div class="project-links">
+                <a href="https://github.com/yourusername/blog-platform" target="_blank" rel="noopener noreferrer" class="project-btn btn-github">
+                  <span>View on GitHub</span>
+                </a>
+                <a href="https://linkedin.com/posts/your-post" target="_blank" rel="noopener noreferrer" class="project-btn btn-linkedin">
+                  <span>LinkedIn Post</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        </section>
+        
+        <!-- ======================================
+             FULL-STACK PROJECTS
+             ====================================== -->
+        <section class="project-category" data-category="fullstack">
+          <h2 class="category-title">
+            <span class="category-icon">⚡</span>
+            Full-Stack Applications
+          </h2>
+          
+          <!-- Project: Task Manager -->
+          <article id="project-task-manager" class="project-detail" data-category="fullstack">
+            <div class="project-header">
+              <div class="project-icon">
+                <img src="Image/Logo.png" alt="Task Manager Icon" />
+              </div>
+              <div class="project-title-group">
+                <h3>Task Management Application</h3>
+                <p class="project-subtitle">Collaborative task tracker with real-time updates</p>
+              </div>
+            </div>
+            
+            <div class="project-content">
+              <p class="project-description">
+                A full-featured task management system designed for team collaboration. Includes user authentication, 
+                role-based access control, real-time updates using WebSockets, drag-and-drop task organization, 
+                priority levels, due dates, file attachments, and comprehensive dashboard with analytics. 
+                The application supports team workspaces, task assignments, and notification system.
+              </p>
+              
+              <div class="tech-stack">
+                <span class="tech-badge">React</span>
+                <span class="tech-badge">TypeScript</span>
+                <span class="tech-badge">Node.js</span>
+                <span class="tech-badge">PostgreSQL</span>
+                <span class="tech-badge">WebSocket</span>
+                <span class="tech-badge">Redux</span>
+              </div>
+              
+              <div class="project-links">
+                <a href="https://github.com/yourusername/task-manager" target="_blank" rel="noopener noreferrer" class="project-btn btn-github">
+                  <span>View on GitHub</span>
+                </a>
+                <a href="https://linkedin.com/posts/your-post" target="_blank" rel="noopener noreferrer" class="project-btn btn-linkedin">
+                  <span>LinkedIn Post</span>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="project-btn btn-demo">
+                  <span>Live Demo</span>
+                </a>
+              </div>
+            </div>
+          </article>
+          
+          <!-- Project: E-Commerce Platform -->
+          <article id="project-ecommerce" class="project-detail" data-category="fullstack">
+            <div class="project-header">
+              <div class="project-icon">
+                <img src="Image/Logo.png" alt="E-Commerce Icon" />
+              </div>
+              <div class="project-title-group">
+                <h3>E-Commerce Platform</h3>
+                <p class="project-subtitle">Complete online shopping solution with payment integration</p>
+              </div>
+            </div>
+            
+            <div class="project-content">
+              <p class="project-description">
+                A comprehensive e-commerce platform with full shopping cart functionality, secure payment processing 
+                via Stripe integration, product catalog with advanced filtering and search, user reviews and ratings, 
+                order tracking, inventory management, admin dashboard for managing products and orders, and automated 
+                email notifications. Features responsive design optimized for mobile shopping experiences.
+              </p>
+              
+              <div class="tech-stack">
+                <span class="tech-badge">Next.js</span>
+                <span class="tech-badge">React</span>
+                <span class="tech-badge">Node.js</span>
+                <span class="tech-badge">Stripe API</span>
+                <span class="tech-badge">MongoDB</span>
+                <span class="tech-badge">Tailwind CSS</span>
+              </div>
+              
+              <div class="project-links">
+                <a href="https://github.com/yourusername/ecommerce-platform" target="_blank" rel="noopener noreferrer" class="project-btn btn-github">
+                  <span>View on GitHub</span>
+                </a>
+                <a href="https://linkedin.com/posts/your-post" target="_blank" rel="noopener noreferrer" class="project-btn btn-linkedin">
+                  <span>LinkedIn Post</span>
+                </a>
+              </div>
+            </div>
+          </article>
+          
+          <!-- Project: Weather Dashboard -->
+          <article id="project-weather-app" class="project-detail" data-category="fullstack frontend">
+            <div class="project-header">
+              <div class="project-icon">
+                <img src="Image/Logo.png" alt="Weather App Icon" />
+              </div>
+              <div class="project-title-group">
+                <h3>Weather Dashboard</h3>
+                <p class="project-subtitle">Real-time weather data visualization and forecasting</p>
+              </div>
+            </div>
+            
+            <div class="project-content">
+              <p class="project-description">
+                An interactive weather dashboard that integrates with multiple weather APIs to provide comprehensive 
+                weather information. Features include current conditions, 7-day forecast, hourly predictions, 
+                interactive maps with weather overlays, location search with autocomplete, favorite locations, 
+                weather alerts, and beautiful data visualizations using charts. Supports geolocation for automatic 
+                location detection and unit conversion (Celsius/Fahrenheit).
+              </p>
+              
+              <div class="tech-stack">
+                <span class="tech-badge">React</span>
+                <span class="tech-badge">Weather API</span>
+                <span class="tech-badge">Chart.js</span>
+                <span class="tech-badge">Geolocation</span>
+                <span class="tech-badge">CSS3</span>
+                <span class="tech-badge">REST API</span>
+              </div>
+              
+              <div class="project-links">
+                <a href="https://github.com/yourusername/weather-dashboard" target="_blank" rel="noopener noreferrer" class="project-btn btn-github">
+                  <span>View on GitHub</span>
+                </a>
+                <a href="https://linkedin.com/posts/your-post" target="_blank" rel="noopener noreferrer" class="project-btn btn-linkedin">
+                  <span>LinkedIn Post</span>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="project-btn btn-demo">
+                  <span>Live Demo</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        </section>
+        
+        <!-- ======================================
+             MOBILE & OTHER PROJECTS
+             ====================================== -->
+        <section class="project-category" data-category="mobile other">
+          <h2 class="category-title">
+            <span class="category-icon">📱</span>
+            Mobile & Other Projects
+          </h2>
+          
+          <!-- Project: Mobile Fitness Tracker -->
+          <article id="project-fitness-tracker" class="project-detail" data-category="mobile">
+            <div class="project-header">
+              <div class="project-icon">
+                <img src="Image/Logo.png" alt="Fitness Tracker Icon" />
+              </div>
+              <div class="project-title-group">
+                <h3>Fitness Tracking Mobile App</h3>
+                <p class="project-subtitle">Cross-platform fitness and workout tracker</p>
+              </div>
+            </div>
+            
+            <div class="project-content">
+              <p class="project-description">
+                A mobile application for tracking fitness goals, workouts, and nutrition. Features include workout 
+                logging, exercise library with animations, progress tracking with charts, calorie counter, water 
+                intake tracker, custom workout plans, achievement system, and integration with device health sensors. 
+                Built with React Native for cross-platform compatibility.
+              </p>
+              
+              <div class="tech-stack">
+                <span class="tech-badge">React Native</span>
+                <span class="tech-badge">Expo</span>
+                <span class="tech-badge">Firebase</span>
+                <span class="tech-badge">Redux</span>
+                <span class="tech-badge">Native APIs</span>
+              </div>
+              
+              <div class="project-links">
+                <a href="https://github.com/yourusername/fitness-tracker" target="_blank" rel="noopener noreferrer" class="project-btn btn-github">
+                  <span>View on GitHub</span>
+                </a>
+                <a href="https://linkedin.com/posts/your-post" target="_blank" rel="noopener noreferrer" class="project-btn btn-linkedin">
+                  <span>LinkedIn Post</span>
+                </a>
+              </div>
+            </div>
+          </article>
+          
+          <!-- Add more projects as needed -->
+          
+        </section>
+        
+      </div>
+      
+      <!-- CTA Section -->
+      <section class="projects-cta">
+        <h2>Interested in collaborating?</h2>
+        <p>Let's build something amazing together</p>
+        <a href="Index.html#contact">
+          <button class="btn btn-primary">
+            <span>Get In Touch</span>
+          </button>
+        </a>
+      </section>
+      
+    </main>
+    
+    <!-- Footer -->
+    <footer role="contentinfo">
+      <p>
+        <strong>Get In Touch</strong><br />
+        Email: <a href="mailto:your-email@example.com">your-email@example.com</a>
+      </p>
+      <p style="margin-top: 1rem;">
+        <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">GitHub</a> | 
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </p>
+      <p style="margin-top: 1rem; font-size: 0.875rem; opacity: 0.8;">
+        &copy; 2026 [Your Name]. All rights reserved.
+      </p>
+    </footer>
+    
+    <!-- Scripts -->
+    <script>
+      // Mobile navigation toggle
+      const mobileToggle = document.querySelector('.mobile-nav-toggle');
+      const navbar = document.querySelector('.navbar');
+      
+      if (mobileToggle) {
+        mobileToggle.addEventListener('click', () => {
+          navbar.classList.toggle('active');
+          const isExpanded = navbar.classList.contains('active');
+          mobileToggle.setAttribute('aria-expanded', isExpanded);
+        });
+      }
+      
+      // Category filter functionality
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const projectCategories = document.querySelectorAll('.project-category');
+      const projectDetails = document.querySelectorAll('.project-detail');
+      
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const category = btn.dataset.category;
+          
+          // Update active button
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          // Filter projects
+          if (category === 'all') {
+            projectCategories.forEach(cat => cat.style.display = 'block');
+            projectDetails.forEach(project => project.style.display = 'block');
+          } else {
+            projectCategories.forEach(cat => {
+              const hasCategory = cat.dataset.category.split(' ').includes(category);
+              cat.style.display = hasCategory ? 'block' : 'none';
+            });
+            
+            projectDetails.forEach(project => {
+              const hasCategory = project.dataset.category.split(' ').includes(category);
+              project.style.display = hasCategory ? 'block' : 'none';
+            });
+          }
+        });
+      });
+      
+      // Scroll animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+          }
+        });
+      }, observerOptions);
+      
+      projectDetails.forEach(project => {
+        observer.observe(project);
+      });
+    </script>
+  </body>
+</html>

@@ -1,116 +1,217 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Character Encoding & Viewport -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Portfolio - [Your Name] | [Your Profession]</title>
+    <meta name="description" content="Professional portfolio of [Your Name], a passionate [Your Profession] specializing in [Your Specializations]. Explore my projects, journey, and get in touch." />
+    <meta name="keywords" content="portfolio, web developer, projects, [Your Name], [Your Profession]" />
+    <meta name="author" content="[Your Name]" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourwebsite.com/" />
+    <meta property="og:title" content="Portfolio - [Your Name]" />
+    <meta property="og:description" content="Professional portfolio showcasing my work and journey in [Your Field]" />
+    <meta property="og:image" content="Image/Logo.png" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://yourwebsite.com/" />
+    <meta property="twitter:title" content="Portfolio - [Your Name]" />
+    <meta property="twitter:description" content="Professional portfolio showcasing my work and journey in [Your Field]" />
+    <meta property="twitter:image" content="Image/Logo.png" />
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio Project</title>
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css" />
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "[Your Name]",
+      "jobTitle": "[Your Profession]",
+      "url": "https://yourwebsite.com",
+      "sameAs": [
+        "https://linkedin.com/in/yourprofile",
+        "https://github.com/yourusername"
+      ]
+    }
+    </script>
   </head>
+  
   <body>
-    <!--header-->
-    <div class="header-container">
-      <header>
-        <nav>
-          <a href="Index.html">
-            <img src="Image/Logo Without BG.png" alt="Logo" class="logo" />
-          </a>
-        </nav>
-      </header>
-      <nav class="navbar">
+    <!-- Header & Navigation -->
+    <header class="header-container" role="banner">
+      <nav aria-label="Logo navigation">
+        <a href="Index.html" aria-label="Home">
+          <img src="Image/Logo Without BG.png" alt="Portfolio Logo" class="logo" />
+        </a>
+      </nav>
+      
+      <button class="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        ☰
+      </button>
+      
+      <nav class="navbar" role="navigation" aria-label="Main navigation">
         <ul>
-          <a href="#about">About</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
-    </div>
-    <!--main content-->
-    <div id="about" class="About-section">
-      <section class="about-me">
-        <div class="about-text">
-          <h1>About Me</h1>
-          <p>
-            Hello! I'm [Your Name], a passionate [Your Profession] with a love
-            for creating innovative solutions. With a background in [Your
-            Background], I specialize in [Your Specializations]. My goal is to
-            leverage technology to make a positive impact and drive progress in
-            the industry.
-          </p>
-          <a href="My Journey.html" target="_blank">
-            <button class="btn">My Journey</button>
+    </header>
+    
+    <!-- Main Content -->
+    <main>
+      <!-- About Section -->
+      <section id="about" class="About-section" aria-labelledby="about-heading">
+        <article class="about-me">
+          <div class="about-text">
+            <h1 id="about-heading">About Me</h1>
+            <p>
+              Hello! I'm <strong>[Your Name]</strong>, a passionate <strong>[Your Profession]</strong> with a love
+              for creating innovative solutions. With a background in <strong>[Your Background]</strong>, I specialize in <strong>[Your Specializations]</strong>. My goal is to
+              leverage technology to make a positive impact and drive progress in
+              the industry.
+            </p>
+            <a href="My Journey.html" aria-label="View my professional journey">
+              <button class="btn" aria-label="Navigate to My Journey page">
+                <span>My Journey</span>
+              </button>
+            </a>
+          </div>
+          <div>
+            <img
+              src="Image/Logo Without BG.png"
+              alt="Profile picture of [Your Name]"
+              class="about-image"
+            />
+          </div>
+        </article>
+      </section>
+      
+      <!-- Projects Preview Section -->
+      <section id="projects" class="projects-section" aria-labelledby="projects-heading">
+        <h2 id="projects-heading">Featured Projects</h2>
+        <div class="scrolling-wrapper" role="list">
+          
+          <a href="projects.html#project-web-portfolio" class="project-card" role="listitem" aria-label="View Personal Portfolio Website project">
+            <div class="card-icon" aria-hidden="true">
+              <img src="Image/Logo.png" alt="" />
+            </div>
+            <h3>Personal Portfolio Website</h3>
+            <p>A responsive portfolio website showcasing my projects and skills using HTML5, CSS3, and modern web design principles.</p>
           </a>
+          
+          <a href="projects.html#project-task-manager" class="project-card" role="listitem" aria-label="View Task Management App project">
+            <div class="card-icon" aria-hidden="true">
+              <img src="Image/Logo.png" alt="" />
+            </div>
+            <h3>Task Management App</h3>
+            <p>Full-featured task management application with user authentication, CRUD operations, and real-time updates.</p>
+          </a>
+          
+          <a href="projects.html#project-weather-app" class="project-card" role="listitem" aria-label="View Weather Dashboard project">
+            <div class="card-icon" aria-hidden="true">
+              <img src="Image/Logo.png" alt="" />
+            </div>
+            <h3>Weather Dashboard</h3>
+            <p>Interactive weather application that fetches real-time data from APIs and displays comprehensive weather information.</p>
+          </a>
+          
+          <a href="projects.html#project-ecommerce" class="project-card" role="listitem" aria-label="View E-Commerce Platform project">
+            <div class="card-icon" aria-hidden="true">
+              <img src="Image/Logo.png" alt="" />
+            </div>
+            <h3>E-Commerce Platform</h3>
+            <p>Modern e-commerce solution with shopping cart, payment integration, product filtering, and user reviews.</p>
+          </a>
+          
+          <a href="projects.html#project-blog" class="project-card" role="listitem" aria-label="View Blog Platform project">
+            <div class="card-icon" aria-hidden="true">
+              <img src="Image/Logo.png" alt="" />
+            </div>
+            <h3>Blog Platform</h3>
+            <p>Content management system with markdown support, comment system, and SEO optimized article pages.</p>
+          </a>
+          
         </div>
-        <div>
-          <img
-            src="Image/Logo Without BG.png"
-            alt="About Me Image"
-            class="about-image"
-          />
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="projects.html" aria-label="View all projects">
+            <button class="btn btn-primary">
+              <span>View All Projects</span>
+            </button>
+          </a>
         </div>
       </section>
-    </div>
-    <!--Projects Section-->
-    <div id="projects">
-      <section class="projects-section">
-        <h2>Projects</h2>
-        <div class="scrolling-wrapper">
-          <a href="#" class="project-card">
-            <div class="card-icon">
-              <img src="Image/Logo.png" alt="Logo" />
-            </div>
-            <h3>Project Title 1</h3>
-            <p>Brief description of Project 1.</p>
-          </a>
-
-
-
-          <a href="#" class="project-card">
-            <div class="card-icon">
-              <img src="Image/Logo.png" alt="Logo" />
-            </div>
-            <h3>Project Title 1</h3>
-            <p>Brief description of Project 1.</p>
-          </a>
-
-          <a href="#" class="project-card">
-            <div class="card-icon">
-              <img src="Image/Logo.png" alt="Logo" />
-            </div>
-            <h3>Project Title 1</h3>
-            <p>Brief description of Project 1.</p>
-          </a>
-
-          <a href="#" class="project-card">
-            <div class="card-icon">
-              <img src="Image/Logo.png" alt="Logo" />
-            </div>
-            <h3>Project Title 1</h3>
-            <p>Brief description of Project 1.</p>
-          </a>
-
-          <a href="#" class="project-card">
-            <div class="card-icon">
-              <img src="Image/Logo.png" alt="Logo" />
-            </div>
-            <h3>Project Title 1</h3>
-            <p>Brief description of Project 1.</p>
-          </a>
-        </div>
-      </section>
-    </div>
-    <!--footer-->
-    <div id="contact">
-      <footer>
-        <p>Contact me at:
-          <a href="mailto:your-email@example.com">your-email@example.com</a>
-        </p>
-      </footer>
-    </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer id="contact" role="contentinfo">
+      <p>
+        <strong>Get In Touch</strong><br />
+        Email: <a href="mailto:your-email@example.com">your-email@example.com</a>
+      </p>
+      <p style="margin-top: 1rem;">
+        <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Visit my GitHub profile">GitHub</a> | 
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Visit my LinkedIn profile">LinkedIn</a>
+      </p>
+      <p style="margin-top: 1rem; font-size: 0.875rem; opacity: 0.8;">
+        &copy; 2026 [Your Name]. All rights reserved.
+      </p>
+    </footer>
+    
+    <!-- Mobile Navigation Script -->
+    <script>
+      // Mobile navigation toggle
+      const mobileToggle = document.querySelector('.mobile-nav-toggle');
+      const navbar = document.querySelector('.navbar');
+      
+      if (mobileToggle) {
+        mobileToggle.addEventListener('click', () => {
+          navbar.classList.toggle('active');
+          const isExpanded = navbar.classList.contains('active');
+          mobileToggle.setAttribute('aria-expanded', isExpanded);
+        });
+      }
+      
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          
+          e.preventDefault();
+          const target = document.querySelector(targetId);
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+            
+            // Close mobile menu if open
+            if (navbar.classList.contains('active')) {
+              navbar.classList.remove('active');
+              mobileToggle.setAttribute('aria-expanded', 'false');
+            }
+          }
+        });
+      });
+    </script>
   </body>
 </html>
