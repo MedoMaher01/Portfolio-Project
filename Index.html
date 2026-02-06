@@ -6,25 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     
-    <!-- SEO Meta Tags -->
-    <title>Portfolio - [Your Name] | [Your Profession]</title>
-    <meta name="description" content="Professional portfolio of [Your Name], a passionate [Your Profession] specializing in [Your Specializations]. Explore my projects, journey, and get in touch." />
-    <meta name="keywords" content="portfolio, web developer, projects, [Your Name], [Your Profession]" />
-    <meta name="author" content="[Your Name]" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="Image/Logo Without BG.png" />
+    
+    <!-- SEO Meta Tags (Will be updated by JavaScript) -->
+    <title>Portfolio</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="" />
     <meta name="robots" content="index, follow" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://yourwebsite.com/" />
-    <meta property="og:title" content="Portfolio - [Your Name]" />
-    <meta property="og:description" content="Professional portfolio showcasing my work and journey in [Your Field]" />
+    <meta property="og:url" content="" />
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
     <meta property="og:image" content="Image/Logo.png" />
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://yourwebsite.com/" />
-    <meta property="twitter:title" content="Portfolio - [Your Name]" />
-    <meta property="twitter:description" content="Professional portfolio showcasing my work and journey in [Your Field]" />
+    <meta property="twitter:url" content="" />
+    <meta property="twitter:title" content="" />
+    <meta property="twitter:description" content="" />
     <meta property="twitter:image" content="Image/Logo.png" />
     
     <!-- Fonts -->
@@ -38,18 +41,15 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css" />
     
-    <!-- Structured Data (JSON-LD) -->
+    <!-- Data & Rendering Scripts -->
+    <script src="data.js"></script>
+    <script src="render.js"></script>
+    
+    <!-- Structured Data (JSON-LD) - Will be updated by JavaScript -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "[Your Name]",
-      "jobTitle": "[Your Profession]",
-      "url": "https://yourwebsite.com",
-      "sameAs": [
-        "https://linkedin.com/in/yourprofile",
-        "https://github.com/yourusername"
-      ]
+      "@type": "Person"
     }
     </script>
   </head>
@@ -83,12 +83,7 @@
         <article class="about-me">
           <div class="about-text">
             <h1 id="about-heading">About Me</h1>
-            <p>
-              Hello! I'm <strong>[Your Name]</strong>, a passionate <strong>[Your Profession]</strong> with a love
-              for creating innovative solutions. With a background in <strong>[Your Background]</strong>, I specialize in <strong>[Your Specializations]</strong>. My goal is to
-              leverage technology to make a positive impact and drive progress in
-              the industry.
-            </p>
+            <p>Loading...</p>
             <a href="My Journey.html" aria-label="View my professional journey">
               <button class="btn" aria-label="Navigate to My Journey page">
                 <span>My Journey</span>
@@ -98,7 +93,7 @@
           <div>
             <img
               src="Image/Logo Without BG.png"
-              alt="Profile picture of [Your Name]"
+              alt="Profile picture"
               class="about-image"
             />
           </div>
@@ -109,47 +104,7 @@
       <section id="projects" class="projects-section" aria-labelledby="projects-heading">
         <h2 id="projects-heading">Featured Projects</h2>
         <div class="scrolling-wrapper" role="list">
-          
-          <a href="projects.html#project-web-portfolio" class="project-card" role="listitem" aria-label="View Personal Portfolio Website project">
-            <div class="card-icon" aria-hidden="true">
-              <img src="Image/Logo.png" alt="" />
-            </div>
-            <h3>Personal Portfolio Website</h3>
-            <p>A responsive portfolio website showcasing my projects and skills using HTML5, CSS3, and modern web design principles.</p>
-          </a>
-          
-          <a href="projects.html#project-task-manager" class="project-card" role="listitem" aria-label="View Task Management App project">
-            <div class="card-icon" aria-hidden="true">
-              <img src="Image/Logo.png" alt="" />
-            </div>
-            <h3>Task Management App</h3>
-            <p>Full-featured task management application with user authentication, CRUD operations, and real-time updates.</p>
-          </a>
-          
-          <a href="projects.html#project-weather-app" class="project-card" role="listitem" aria-label="View Weather Dashboard project">
-            <div class="card-icon" aria-hidden="true">
-              <img src="Image/Logo.png" alt="" />
-            </div>
-            <h3>Weather Dashboard</h3>
-            <p>Interactive weather application that fetches real-time data from APIs and displays comprehensive weather information.</p>
-          </a>
-          
-          <a href="projects.html#project-ecommerce" class="project-card" role="listitem" aria-label="View E-Commerce Platform project">
-            <div class="card-icon" aria-hidden="true">
-              <img src="Image/Logo.png" alt="" />
-            </div>
-            <h3>E-Commerce Platform</h3>
-            <p>Modern e-commerce solution with shopping cart, payment integration, product filtering, and user reviews.</p>
-          </a>
-          
-          <a href="projects.html#project-blog" class="project-card" role="listitem" aria-label="View Blog Platform project">
-            <div class="card-icon" aria-hidden="true">
-              <img src="Image/Logo.png" alt="" />
-            </div>
-            <h3>Blog Platform</h3>
-            <p>Content management system with markdown support, comment system, and SEO optimized article pages.</p>
-          </a>
-          
+          <!-- Projects will be dynamically loaded here -->
         </div>
         <div style="text-align: center; margin-top: 2rem;">
           <a href="projects.html" aria-label="View all projects">
@@ -163,54 +118,15 @@
     
     <!-- Footer -->
     <footer id="contact" role="contentinfo">
-      <p>
-        <strong>Get In Touch</strong><br />
-        Email: <a href="mailto:your-email@example.com">your-email@example.com</a>
-      </p>
-      <p style="margin-top: 1rem;">
-        <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Visit my GitHub profile">GitHub</a> | 
-        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Visit my LinkedIn profile">LinkedIn</a>
-      </p>
-      <p style="margin-top: 1rem; font-size: 0.875rem; opacity: 0.8;">
-        &copy; 2026 [Your Name]. All rights reserved.
-      </p>
+      <!-- Footer will be dynamically loaded here -->
     </footer>
     
-    <!-- Mobile Navigation Script -->
+    <!-- Initialize Page -->
     <script>
-      // Mobile navigation toggle
-      const mobileToggle = document.querySelector('.mobile-nav-toggle');
-      const navbar = document.querySelector('.navbar');
-      
-      if (mobileToggle) {
-        mobileToggle.addEventListener('click', () => {
-          navbar.classList.toggle('active');
-          const isExpanded = navbar.classList.contains('active');
-          mobileToggle.setAttribute('aria-expanded', isExpanded);
-        });
-      }
-      
-      // Smooth scroll for anchor links
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-          const targetId = this.getAttribute('href');
-          if (targetId === '#') return;
-          
-          e.preventDefault();
-          const target = document.querySelector(targetId);
-          if (target) {
-            target.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
-            
-            // Close mobile menu if open
-            if (navbar.classList.contains('active')) {
-              navbar.classList.remove('active');
-              mobileToggle.setAttribute('aria-expanded', 'false');
-            }
-          }
-        });
+      // Initialize the page when DOM is ready
+      document.addEventListener('DOMContentLoaded', () => {
+        renderIndexPage();
+        initializeMobileNav();
       });
     </script>
   </body>

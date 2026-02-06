@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     
-    <!-- SEO Meta Tags -->
-    <title>My Journey - [Your Name]</title>
-    <meta name="description" content="Explore the professional journey, milestones, education, and key projects of [Your Name]" />
-    <meta name="author" content="[Your Name]" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="Image/Logo Without BG.png" />
+    
+    <!-- SEO Meta Tags (Will be updated by JavaScript) -->
+    <title>My Journey</title>
+    <meta name="description" content="" />
+    <meta name="author" content="" />
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,6 +25,10 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="journey.css" />
+    
+    <!-- Data & Rendering Scripts -->
+    <script src="data.js"></script>
+    <script src="render.js"></script>
   </head>
   
   <body>
@@ -55,175 +62,7 @@
       
       <div class="timeline-container">
         <div class="timeline">
-          
-          <!-- Milestone 1: Early Beginnings -->
-          <div class="timeline-item" data-category="life">
-            <div class="timeline-marker">
-              <div class="timeline-icon">🌱</div>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-date">2000 - 2010</div>
-              <h3>Early Beginnings</h3>
-              <span class="timeline-badge">Life</span>
-              <p>
-                Discovered my passion for technology and problem-solving. Started exploring computers, 
-                learning basic programming concepts, and developing a curiosity for how things work.
-              </p>
-            </div>
-          </div>
-          
-          <!-- Milestone 2: Education - High School -->
-          <div class="timeline-item" data-category="education">
-            <div class="timeline-marker">
-              <div class="timeline-icon">📚</div>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-date">2015 - 2018</div>
-              <h3>High School Education</h3>
-              <span class="timeline-badge education">Education</span>
-              <p>
-                Completed high school with focus on mathematics and sciences. Participated in 
-                coding clubs and tech competitions, solidifying my interest in software development.
-              </p>
-            </div>
-          </div>
-          
-          <!-- Milestone 3: University -->
-          <div class="timeline-item" data-category="education">
-            <div class="timeline-marker">
-              <div class="timeline-icon">🎓</div>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-date">2018 - 2022</div>
-              <h3>Bachelor's Degree in Computer Science</h3>
-              <span class="timeline-badge education">Education</span>
-              <p>
-                Pursued degree in Computer Science at [University Name]. Studied data structures, 
-                algorithms, web development, and software engineering principles. Graduated with honors.
-              </p>
-            </div>
-          </div>
-          
-          <!-- Milestone 4: First Major Project -->
-          <div class="timeline-item" data-category="project">
-            <div class="timeline-marker">
-              <div class="timeline-icon">💻</div>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-date">2020</div>
-              <h3>First Major Project</h3>
-              <span class="timeline-badge project">Project</span>
-              <p>
-                Developed my first full-stack web application - a 
-                <a href="projects.html#project-task-manager" class="project-link">Task Management System</a> 
-                using modern web technologies. This project taught me about database design, API development, 
-                and user interface principles.
-              </p>
-            </div>
-          </div>
-          
-          <!-- Milestone 5: Internship -->
-          <div class="timeline-item" data-category="career">
-            <div class="timeline-marker">
-              <div class="timeline-icon">💼</div>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-date">2021</div>
-              <h3>Software Development Internship</h3>
-              <span class="timeline-badge career">Career</span>
-              <p>
-                Completed internship at [Company Name] where I worked on real-world projects, 
-                collaborated with experienced developers, and learned industry best practices.
-              </p>
-            </div>
-          </div>
-          
-          <!-- Milestone 6: Portfolio Website -->
-          <div class="timeline-item" data-category="project">
-            <div class="timeline-marker">
-              <div class="timeline-icon">🎨</div>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-date">2022</div>
-              <h3>Portfolio Website Launch</h3>
-              <span class="timeline-badge project">Project</span>
-              <p>
-                Created and launched my 
-                <a href="projects.html#project-web-portfolio" class="project-link">Personal Portfolio Website</a> 
-                to showcase my work and skills. Implemented responsive design, accessibility features, 
-                and SEO optimization.
-              </p>
-            </div>
-          </div>
-          
-          <!-- Milestone 7: Professional Work -->
-          <div class="timeline-item" data-category="career">
-            <div class="timeline-marker">
-              <div class="timeline-icon">🚀</div>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-date">2022 - 2024</div>
-              <h3>Junior Developer Position</h3>
-              <span class="timeline-badge career">Career</span>
-              <p>
-                Joined [Company Name] as a Junior Developer. Contributed to multiple client projects, 
-                improved application performance, and mentored new team members.
-              </p>
-            </div>
-          </div>
-          
-          <!-- Milestone 8: E-Commerce Project -->
-          <div class="timeline-item" data-category="project">
-            <div class="timeline-marker">
-              <div class="timeline-icon">🛒</div>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-date">2023</div>
-              <h3>E-Commerce Platform</h3>
-              <span class="timeline-badge project">Project</span>
-              <p>
-                Built a comprehensive 
-                <a href="projects.html#project-ecommerce" class="project-link">E-Commerce Platform</a> 
-                with payment integration, inventory management, and analytics dashboard. 
-                This project significantly enhanced my full-stack development skills.
-              </p>
-            </div>
-          </div>
-          
-          <!-- Milestone 9: Certifications -->
-          <div class="timeline-item" data-category="achievement">
-            <div class="timeline-marker">
-              <div class="timeline-icon">🏆</div>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-date">2024</div>
-              <h3>Professional Certifications</h3>
-              <span class="timeline-badge achievement">Achievement</span>
-              <p>
-                Earned multiple professional certifications including AWS Certified Developer, 
-                React Advanced Certification, and Responsive Web Design. Committed to continuous learning 
-                and professional development.
-              </p>
-            </div>
-          </div>
-          
-          <!-- Milestone 10: Current Goals -->
-          <div class="timeline-item" data-category="achievement">
-            <div class="timeline-marker">
-              <div class="timeline-icon">🎯</div>
-            </div>
-            <div class="timeline-content">
-              <div class="timeline-date">2025 - Present</div>
-              <h3>Current Goals & Future Vision</h3>
-              <span class="timeline-badge achievement">Goals</span>
-              <p>
-                Currently focused on expanding expertise in cloud architecture, mobile development, 
-                and contributing to open-source projects. Aspiring to become a technical lead and 
-                mentor the next generation of developers.
-              </p>
-            </div>
-          </div>
-          
+          <!-- Timeline events will be dynamically loaded here -->
         </div>
       </div>
       
@@ -240,50 +79,14 @@
     
     <!-- Footer -->
     <footer role="contentinfo">
-      <p>
-        <strong>Get In Touch</strong><br />
-        Email: <a href="mailto:your-email@example.com">your-email@example.com</a>
-      </p>
-      <p style="margin-top: 1rem;">
-        <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">GitHub</a> | 
-        <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      </p>
-      <p style="margin-top: 1rem; font-size: 0.875rem; opacity: 0.8;">
-        &copy; 2026 [Your Name]. All rights reserved.
-      </p>
+      <!-- Footer will be dynamically loaded here -->
     </footer>
     
-    <!-- Scripts -->
+    <!-- Initialize Page -->
     <script>
-      // Mobile navigation toggle
-      const mobileToggle = document.querySelector('.mobile-nav-toggle');
-      const navbar = document.querySelector('.navbar');
-      
-      if (mobileToggle) {
-        mobileToggle.addEventListener('click', () => {
-          navbar.classList.toggle('active');
-          const isExpanded = navbar.classList.contains('active');
-          mobileToggle.setAttribute('aria-expanded', isExpanded);
-        });
-      }
-      
-      // Intersection Observer for timeline animations
-      const observerOptions = {
-        threshold: 0.2,
-        rootMargin: '0px 0px -100px 0px'
-      };
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-          }
-        });
-      }, observerOptions);
-      
-      // Observe all timeline items
-      document.querySelectorAll('.timeline-item').forEach(item => {
-        observer.observe(item);
+      document.addEventListener('DOMContentLoaded', () => {
+        renderTimelinePage();
+        initializeMobileNav();
       });
     </script>
   </body>
