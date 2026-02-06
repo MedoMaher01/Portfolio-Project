@@ -102,8 +102,11 @@ function renderFeaturedProjects() {
   const container = document.querySelector('.scrolling-wrapper');
   if (!container) return;
   
+  // Get all projects from all categories
+  const allProjects = getAllProjects();
+  
   // Get first 5 projects as featured
-  const featured = portfolioData.projects.slice(0, 5);
+  const featured = allProjects.slice(0, 5);
   
   container.innerHTML = featured.map(project => `
     <a href="projects.html#project-${project.id}" class="project-card" role="listitem" aria-label="View ${project.title} project">
@@ -257,10 +260,23 @@ function renderProjectFilters() {
   const container = document.querySelector('.category-filter');
   if (!container) return;
   
-  const { projectFilters } = portfolioData;
+  // Generate filters dynamically from projectCategories
+  const { projectCategories } = portfolioData;
+  const categoryKeys = Object.keys(projectCategories);
   
-  container.innerHTML = projectFilters.map((filter, index) => `
+  // Create "All Projects" filter first, then individual category filters
+  const filters = [
+    { id: 'all', label: 'All Projects', icon: '📂' },
+    ...categoryKeys.map(key => ({
+      id: key,
+      label: projectCategories[key].title,
+      icon: projectCategories[key].icon
+    }))
+  ];
+  
+  container.innerHTML = filters.map((filter, index) => `
     <button class="filter-btn ${index === 0 ? 'active' : ''}" data-category="${filter.id}">
+      <span class="filter-icon">${filter.icon}</span>
       ${filter.label}
     </button>
   `).join('');
@@ -270,34 +286,21 @@ function renderProjectsByCategory() {
   const container = document.querySelector('.projects-container');
   if (!container) return;
   
-  // Group projects by their primary category for section headers
-  const categoryGroups = {
-    web: { title: 'Web Development', icon: '🌐', projects: [] },
-    fullstack: { title: 'Full-Stack Applications', icon: '⚡', projects: [] },
-    mobile: { title: 'Mobile & Other Projects', icon: '📱', projects: [] }
-  };
+  // Read categories dynamically from projectCategories
+  const { projectCategories } = portfolioData;
   
-  // Categorize projects
-  portfolioData.projects.forEach(project => {
-    if (project.category.includes('fullstack')) {
-      categoryGroups.fullstack.projects.push(project);
-    } else if (project.category.includes('mobile')) {
-      categoryGroups.mobile.projects.push(project);
-    } else if (project.category.includes('web') || project.category.includes('frontend')) {
-      categoryGroups.web.projects.push(project);
-    }
-  });
-  
-  // Render sections
-  container.innerHTML = Object.entries(categoryGroups)
-    .filter(([_, group]) => group.projects.length > 0)
-    .map(([key, group]) => `
+  // Render each category section dynamically
+  container.innerHTML = Object.entries(projectCategories)
+    .map(([key, categoryData]) => `
       <section class="project-category" data-category="${key}">
-        <h2 class="category-title">
-          <span class="category-icon">${group.icon}</span>
-          ${group.title}
-        </h2>
-        ${group.projects.map(project => renderProjectCard(project)).join('')}
+        <div class="category-header">
+          <h2 class="category-title">
+            <span class="category-icon">${categoryData.icon}</span>
+            ${categoryData.title}
+          </h2>
+          <p class="category-description">${categoryData.description}</p>
+        </div>
+        ${categoryData.projects.map(project => renderProjectCard(project, key)).join('')}
       </section>
     `).join('');
   
@@ -318,36 +321,65 @@ function renderProjectsByCategory() {
   initializeProjectAnimations();
 }
 
-function renderProjectCard(project) {
+function renderProjectCard(project, categoryKey) {
+  // Link type configuration with icons and CSS classes
+  const linkTypeConfig = {
+    github: { icon: '📦', class: 'btn-github', defaultLabel: 'View on GitHub' },
+    behance: { icon: '🎨', class: 'btn-behance', defaultLabel: 'View on Behance' },
+    pdf: { icon: '📄', class: 'btn-pdf', defaultLabel: 'Download PDF'},
+    drive: { icon: '☁️', class: 'btn-drive', defaultLabel: 'View Files' },
+    demo: { icon: '🚀', class: 'btn-demo', defaultLabel: 'Live Demo' },
+    linkedin: { icon: '💼', class: 'btn-linkedin', defaultLabel: 'LinkedIn Post' },
+    youtube: { icon: '📺', class: 'btn-youtube', defaultLabel: 'Watch Video' },
+    custom: { icon: '🔗', class: 'btn-custom', defaultLabel: 'View Link' }
+  };
+  
   const techBadges = project.techStack.map(tech => 
     `<span class="tech-badge">${tech}</span>`
   ).join('');
   
-  const links = [];
-  if (project.links.github) {
-    links.push(`
-      <a href="${project.links.github}" target="_blank" rel="noopener noreferrer" class="project-btn btn-github">
-        <span>View on GitHub</span>
+  // Render links using the new array structure
+  const linksHTML = project.links.map(link => {
+    const config = linkTypeConfig[link.type] || linkTypeConfig.custom;
+    const label = link.label || config.defaultLabel;
+    
+    return `
+      <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="project-btn ${config.class}">
+        <span class="btn-icon">${config.icon}</span>
+        <span>${label}</span>
       </a>
-    `);
-  }
-  if (project.links.linkedin) {
-    links.push(`
-      <a href="${project.links.linkedin}" target="_blank" rel="noopener noreferrer" class="project-btn btn-linkedin">
-        <span>LinkedIn Post</span>
-      </a>
-    `);
-  }
-  if (project.links.demo) {
-    links.push(`
-      <a href="${project.links.demo}" target="_blank" rel="noopener noreferrer" class="project-btn btn-demo">
-        <span>Live Demo</span>
-      </a>
-    `);
+    `;
+  }).join('');
+  
+  // Render media if present
+  let mediaHtml = '';
+  if (project.media) {
+    if (project.media.type === 'image') {
+      mediaHtml = `
+        <div class="project-media">
+          <img src="${project.media.url}" alt="${project.title}" loading="lazy" />
+        </div>
+      `;
+    } else if (project.media.type === 'youtube') {
+      mediaHtml = `
+        <div class="project-media">
+          <div class="project-media-video">
+            <iframe 
+              src="${project.media.url}" 
+              title="${project.title} video"
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+      `;
+    }
   }
   
   return `
-    <article id="project-${project.id}" class="project-detail" data-category="${project.category.join(' ')}">
+    <article id="project-${project.id}" class="project-detail" data-category="${categoryKey}">
       <div class="project-header">
         <div class="project-icon">
           <img src="${project.icon}" alt="${project.title} Icon" />
@@ -361,12 +393,14 @@ function renderProjectCard(project) {
       <div class="project-content">
         <p class="project-description">${project.description}</p>
         
+        ${mediaHtml}
+        
         <div class="tech-stack">
           ${techBadges}
         </div>
         
         <div class="project-links">
-          ${links.join('')}
+          ${linksHTML}
         </div>
       </div>
     </article>
@@ -376,29 +410,27 @@ function renderProjectCard(project) {
 function initializeProjectFiltering() {
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projectCategories = document.querySelectorAll('.project-category');
-  const projectDetails = document.querySelectorAll('.project-detail');
   
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      const category = btn.dataset.category;
+      const categoryKey = btn.dataset.category;
       
       // Update active button
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       
-      // Filter projects
-      if (category === 'all') {
+      // Filter categories
+      if (categoryKey === 'all') {
+        // Show all categories
         projectCategories.forEach(cat => cat.style.display = 'block');
-        projectDetails.forEach(project => project.style.display = 'block');
       } else {
+        // Show only selected category
         projectCategories.forEach(cat => {
-          const hasCategory = cat.dataset.category.split(' ').includes(category);
-          cat.style.display = hasCategory ? 'block' : 'none';
-        });
-        
-        projectDetails.forEach(project => {
-          const hasCategory = project.dataset.category.split(' ').includes(category);
-          project.style.display = hasCategory ? 'block' : 'none';
+          if (cat.dataset.category === categoryKey) {
+            cat.style.display = 'block';
+          } else {
+            cat.style.display = 'none';
+          }
         });
       }
     });

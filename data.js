@@ -31,104 +31,133 @@ const portfolioData = {
   },
 
   // ========================================
-  // PROJECTS - Add your projects here!
+  // PROJECT CATEGORIES - Organize by Domain
   // ========================================
-  // Each project needs:
-  // - id: Unique identifier (use lowercase with hyphens, e.g., "my-app")
+  // Each category contains:
+  // - title: Display name for the category
+  // - icon: Emoji or icon for visual identification
+  // - description: Brief description of the category
+  // - projects: Array of projects in this category
+  //
+  // Each project contains:
+  // - id: Unique identifier (use lowercase with hyphens)
   // - title: Project name
-  // - subtitle: Short description
-  // - description: Full project description
-  // - category: Array of categories (web, frontend, fullstack, mobile, other)
-  // - techStack: Array of technologies used
-  // - links: Object with github, linkedin, demo URLs (use null if not applicable)
+  // - subtitle: Short one-line description
+  // - description: Full detailed description
+  // - techStack: Array of tools/technologies used
+  // - links: Array of link objects with { type, url, label }
+  //   Available types: github, behance, pdf, drive, demo, linkedin, youtube, custom
   // - icon: Path to project icon/image
+  // - media: (OPTIONAL) Add images or videos { type: "image"/"youtube", url: "..." }
   
-  projects: [
-    {
-      id: "web-portfolio",
-      title: "Personal Portfolio Website",
-      subtitle: "Responsive portfolio showcasing skills and projects",
-      description: "A modern, fully responsive portfolio website built from scratch using HTML5, CSS3, and vanilla JavaScript. Features include an interactive timeline showcasing my professional journey, a projects gallery organized by skills, smooth scroll animations, and comprehensive SEO optimization. The design follows mobile-first principles with a focus on accessibility and user experience.",
-      category: ["web", "frontend"],
-      techStack: ["HTML5", "CSS3", "JavaScript", "Responsive Design", "SEO"],
-      links: {
-        github: "https://github.com/yourusername/portfolio",
-        linkedin: "https://linkedin.com/posts/your-post",
-        demo: "#"
-      },
-      icon: "Image/Logo.png"
+  projectCategories: {
+    programming: {
+      title: "Programming Projects",
+      icon: "💻",
+      description: "Software development and web applications",
+      projects: [
+        {
+          id: "web-portfolio",
+          title: "Personal Portfolio Website",
+          subtitle: "Responsive portfolio showcasing skills and projects",
+          description: "A modern, fully responsive portfolio website built from scratch using HTML5, CSS3, and vanilla JavaScript. Features include an interactive timeline showcasing my professional journey, a projects gallery organized by skills, smooth scroll animations, and comprehensive SEO optimization. The design follows mobile-first principles with a focus on accessibility and user experience.",
+          techStack: ["HTML5", "CSS3", "JavaScript", "Responsive Design", "SEO"],
+          links: [
+            { type: "github", url: "https://github.com/MedoMaher01/Portfolio-Project", label: "View Code" },
+            { type: "demo", url: "#", label: "Live Demo" }
+          ],
+          icon: "Image/Logo.png"
+        },
+        {
+          id: "task-manager",
+          title: "Task Management Application",
+          subtitle: "Collaborative task tracker with real-time updates",
+          description: "A full-featured task management system designed for team collaboration. Includes user authentication, role-based access control, real-time updates using WebSockets, drag-and-drop task organization, priority levels, due dates, file attachments, and comprehensive dashboard with analytics. The application supports team workspaces, task assignments, and notification system.",
+          techStack: ["React", "TypeScript", "Node.js", "PostgreSQL", "WebSocket", "Redux"],
+          links: [
+            { type: "github", url: "https://github.com/MedoMaher01/task-manager", label: "View Code" },
+            { type: "linkedin", url: "https://linkedin.com/posts/your-post", label: "Case Study" }
+          ],
+          icon: "Image/Logo.png"
+        },
+        {
+          id: "ecommerce",
+          title: "E-Commerce Platform",
+          subtitle: "Complete online shopping solution with payment integration",
+          description: "A comprehensive e-commerce platform with full shopping cart functionality, secure payment processing via Stripe integration, product catalog with advanced filtering and search, user reviews and ratings, order tracking, inventory management, admin dashboard for managing products and orders, and automated email notifications. Features responsive design optimized for mobile shopping experiences.",
+          techStack: ["Next.js", "React", "Node.js", "Stripe API", "MongoDB", "Tailwind CSS"],
+          links: [
+            { type: "github", url: "https://github.com/MedoMaher01/ecommerce-platform", label: "View Code" }
+          ],
+          icon: "Image/Logo.png",
+          media: {
+            type: "youtube",
+            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          }
+        }
+      ]
     },
-    {
-      id: "task-manager",
-      title: "Task Management Application",
-      subtitle: "Collaborative task tracker with real-time updates",
-      description: "A full-featured task management system designed for team collaboration. Includes user authentication, role-based access control, real-time updates using WebSockets, drag-and-drop task organization, priority levels, due dates, file attachments, and comprehensive dashboard with analytics. The application supports team workspaces, task assignments, and notification system.",
-      category: ["fullstack"],
-      techStack: ["React", "TypeScript", "Node.js", "PostgreSQL", "WebSocket", "Redux"],
-      links: {
-        github: "https://github.com/yourusername/task-manager",
-        linkedin: "https://linkedin.com/posts/your-post",
-        demo: "#"
-      },
-      icon: "Image/Logo.png"
+    
+    cybersecurity: {
+      title: "Cyber Security",
+      icon: "🔐",
+      description: "Security research, penetration testing, and vulnerability analysis",
+      projects: [
+        {
+          id: "security-example",
+          title: "Network Security Assessment",
+          subtitle: "Comprehensive penetration testing and security audit",
+          description: "Example project: Conducted thorough security assessment of enterprise network infrastructure. Identified critical vulnerabilities, performed penetration testing using industry-standard tools, and provided detailed remediation recommendations. Delivered comprehensive security report with risk analysis and mitigation strategies.",
+          techStack: ["Kali Linux", "Metasploit", "Burp Suite", "Nmap", "Wireshark"],
+          links: [
+            { type: "pdf", url: "#", label: "Security Report" },
+            { type: "linkedin", url: "#", label: "Read More" }
+          ],
+          icon: "Image/Logo.png"
+        }
+      ]
     },
-    {
-      id: "ecommerce",
-      title: "E-Commerce Platform",
-      subtitle: "Complete online shopping solution with payment integration",
-      description: "A comprehensive e-commerce platform with full shopping cart functionality, secure payment processing via Stripe integration, product catalog with advanced filtering and search, user reviews and ratings, order tracking, inventory management, admin dashboard for managing products and orders, and automated email notifications. Features responsive design optimized for mobile shopping experiences.",
-      category: ["fullstack"],
-      techStack: ["Next.js", "React", "Node.js", "Stripe API", "MongoDB", "Tailwind CSS"],
-      links: {
-        github: "https://github.com/yourusername/ecommerce-platform",
-        linkedin: "https://linkedin.com/posts/your-post",
-        demo: null
-      },
-      icon: "Image/Logo.png"
+    
+    design: {
+      title: "Graphic Design",
+      icon: "🎨",
+      description: "Visual design, branding, and creative work",
+      projects: [
+        {
+          id: "design-example",
+          title: "Brand Identity Design",
+          subtitle: "Complete branding package for tech startup",
+          description: "Example project: Created comprehensive brand identity including logo design, color palette, typography system, and brand guidelines. Developed cohesive visual language across all touchpoints including website mockups, business cards, and social media templates. Delivered complete brand book with usage guidelines.",
+          techStack: ["Adobe Illustrator", "Photoshop", "Figma", "InDesign"],
+          links: [
+            { type: "behance", url: "#", label: "View on Behance" },
+            { type: "pdf", url: "#", label: "Brand Guidelines" }
+          ],
+          icon: "Image/Logo.png"
+        }
+      ]
     },
-    {
-      id: "weather-app",
-      title: "Weather Dashboard",
-      subtitle: "Real-time weather data visualization and forecasting",
-      description: "An interactive weather dashboard that integrates with multiple weather APIs to provide comprehensive weather information. Features include current conditions, 7-day forecast, hourly predictions, interactive maps with weather overlays, location search with autocomplete, favorite locations, weather alerts, and beautiful data visualizations using charts. Supports geolocation for automatic location detection and unit conversion (Celsius/Fahrenheit).",
-      category: ["fullstack", "frontend"],
-      techStack: ["React", "Weather API", "Chart.js", "Geolocation", "CSS3", "REST API"],
-      links: {
-        github: "https://github.com/yourusername/weather-dashboard",
-        linkedin: "https://linkedin.com/posts/your-post",
-        demo: "#"
-      },
-      icon: "Image/Logo.png"
-    },
-    {
-      id: "blog-platform",
-      title: "Blog Platform with CMS",
-      subtitle: "Feature-rich blogging platform with content management",
-      description: "A comprehensive blog platform with a custom content management system. Features include markdown support for writing articles, rich text editor, comment system with moderation, user authentication, category and tag management, SEO-optimized URLs, and RSS feed generation. The platform is built with modern web technologies and follows best practices for performance and security.",
-      category: ["web", "frontend", "fullstack"],
-      techStack: ["React", "Node.js", "Express", "MongoDB", "Markdown", "JWT Auth"],
-      links: {
-        github: "https://github.com/yourusername/blog-platform",
-        linkedin: "https://linkedin.com/posts/your-post",
-        demo: null
-      },
-      icon: "Image/Logo.png"
-    },
-    {
-      id: "fitness-tracker",
-      title: "Fitness Tracking Mobile App",
-      subtitle: "Cross-platform fitness and workout tracker",
-      description: "A mobile application for tracking fitness goals, workouts, and nutrition. Features include workout logging, exercise library with animations, progress tracking with charts, calorie counter, water intake tracker, custom workout plans, achievement system, and integration with device health sensors. Built with React Native for cross-platform compatibility.",
-      category: ["mobile"],
-      techStack: ["React Native", "Expo", "Firebase", "Redux", "Native APIs"],
-      links: {
-        github: "https://github.com/yourusername/fitness-tracker",
-        linkedin: "https://linkedin.com/posts/your-post",
-        demo: null
-      },
-      icon: "Image/Logo.png"
+    
+    freelance: {
+      title: "Freelance Work",
+      icon: "💼",
+      description: "Client projects and consulting services",
+      projects: [
+        {
+          id: "freelance-example",
+          title: "Client Web Development",
+          subtitle: "Custom website solutions for local businesses",
+          description: "Example project: Developed custom websites for various clients including restaurants, retail stores, and professional services. Provided end-to-end solutions from requirements gathering to deployment. Implemented content management systems, responsive designs, and SEO optimization tailored to each client's needs.",
+          techStack: ["WordPress", "HTML/CSS", "JavaScript", "PHP"],
+          links: [
+            { type: "demo", url: "#", label: "View Portfolio" },
+            { type: "linkedin", url: "#", label: "Testimonials" }
+          ],
+          icon: "Image/Logo.png"
+        }
+      ]
     }
-  ],
+  },
 
   // ========================================
   // TIMELINE EVENTS - Add your journey milestones!
@@ -143,8 +172,8 @@ const portfolioData = {
   // - media: (OPTIONAL) Add images or videos to your timeline events!
   //   - type: "image", "youtube", or "video"
   //   - url: Path to image file or YouTube embed URL
-  //   Example: media: { type: "image", url: "Image/my-photo.jpg" }
-  //   Example: media: { type: "youtube", url: "https://www.youtube.com/embed/VIDEO_ID" }
+  // Example: media: { type: "image", url: "Image/my-photo.jpg" }
+  // Example: media: { type: "youtube", url: "https://www.youtube.com/embed/VIDEO_ID" }
   
   timeline: [
     {
@@ -231,7 +260,7 @@ const portfolioData = {
   ],
 
   // ========================================
-  // CATEGORY CONFIGURATIONS
+  // CATEGORY CONFIGURATIONS (Timeline Categories)
   // ========================================
   categories: {
     life: { label: "Life", color: "#4a90e2" },
@@ -239,32 +268,28 @@ const portfolioData = {
     career: { label: "Career", color: "#9c27b0" },
     project: { label: "Project", color: "#ff9800" },
     achievement: { label: "Achievement", color: "#f44336" }
-  },
-
-  // Project filter categories
-  projectFilters: [
-    { id: "all", label: "All Projects" },
-    { id: "web", label: "Web Development" },
-    { id: "mobile", label: "Mobile Apps" },
-    { id: "fullstack", label: "Full-Stack" },
-    { id: "frontend", label: "Frontend" },
-    { id: "other", label: "Other" }
-  ]
+  }
 };
 
 // ========================================
 // HELPER FUNCTIONS
 // ========================================
 
-// Get project by ID
-function getProjectById(projectId) {
-  return portfolioData.projects.find(p => p.id === projectId);
+// Get all projects from all categories as a flat array
+function getAllProjects() {
+  const categories = portfolioData.projectCategories;
+  return Object.values(categories).flatMap(cat => cat.projects);
 }
 
-// Get projects by category
-function getProjectsByCategory(category) {
-  if (category === 'all') return portfolioData.projects;
-  return portfolioData.projects.filter(p => p.category.includes(category));
+// Get project by ID (searches across all categories)
+function getProjectById(projectId) {
+  return getAllProjects().find(p => p.id === projectId);
+}
+
+// Get projects by category key
+function getProjectsByCategory(categoryKey) {
+  if (categoryKey === 'all') return getAllProjects();
+  return portfolioData.projectCategories[categoryKey]?.projects || [];
 }
 
 // Get timeline events by category
