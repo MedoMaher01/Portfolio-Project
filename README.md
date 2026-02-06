@@ -162,4 +162,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Note**: Remember to replace all placeholder content (marked with brackets like `[Your Name]`) with your actual information before deployment.
+**Note**: Remember to replace all placeholder content (marked with brackets like `Ahmed Maher`) with your actual information before deployment.
