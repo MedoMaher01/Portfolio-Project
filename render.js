@@ -497,6 +497,13 @@ function initializeMobileNav() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href');
+      
+      // تجاهل أزرار التنقل - دعها تعمل بشكل طبيعي
+      const anchorId = this.getAttribute('id');
+      if (anchorId === 'prev-project' || anchorId === 'next-project') {
+        return;
+      }
+      
       if (targetId === '#') return;
       
       e.preventDefault();
@@ -720,27 +727,41 @@ function renderProjectInsights(project) {
 }
 
 function setupProjectNavigation(currentProjectId) {
+  // الخطوة 1: جلب جميع المشاريع من data.js
   const allProjects = getAllProjects();
+  
+  // الخطوة 2: البحث عن index المشروع الحالي في المصفوفة
   const currentIndex = allProjects.findIndex(p => p.id === currentProjectId);
+  
+  // إذا لم يتم العثور على المشروع، إخفاء الأزرار
+  if (currentIndex === -1 || allProjects.length === 0) {
+    document.getElementById('prev-project').style.display = 'none';
+    document.getElementById('next-project').style.display = 'none';
+    return;
+  }
   
   const prevBtn = document.getElementById('prev-project');
   const nextBtn = document.getElementById('next-project');
   
-  // Setup previous project button
+  // الخطوة 3 و 4: إعداد زر Previous
   if (currentIndex > 0) {
+    // يوجد مشروع سابق
     const prevProject = allProjects[currentIndex - 1];
     prevBtn.href = `project.html?id=${prevProject.id}`;
     prevBtn.style.display = 'inline-flex';
   } else {
+    // لا يوجد مشروع سابق (نحن في أول مشروع)
     prevBtn.style.display = 'none';
   }
   
-  // Setup next project button
+  // الخطوة 3 و 4: إعداد زر Next
   if (currentIndex < allProjects.length - 1) {
+    // يوجد مشروع تالي
     const nextProject = allProjects[currentIndex + 1];
     nextBtn.href = `project.html?id=${nextProject.id}`;
     nextBtn.style.display = 'inline-flex';
   } else {
+    // لا يوجد مشروع تالي (نحن في آخر مشروع)
     nextBtn.style.display = 'none';
   }
 }

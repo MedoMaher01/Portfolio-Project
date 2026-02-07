@@ -89,11 +89,7 @@ const portfolioData = {
           links: [
             { type: "github", url: "https://github.com/MedoMaher01/ecommerce-platform", label: "View Code" }
           ],
-          icon: "Image/Logo.png",
-          media: {
-            type: "youtube",
-            url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-          }
+          icon: "Image/Logo.png"
         }
       ]
     },
@@ -156,7 +152,15 @@ const portfolioData = {
           icon: "Image/Logo.png"
         }
       ]
-    }
+    },
+      SystemAdmin: {
+      title: "System Admin",
+      icon: "⌨️",
+      description: "Linux Administration, SSH, Terminal basics",
+      projects: [
+
+       ]
+      }
   },
 
   // ========================================
@@ -177,22 +181,29 @@ const portfolioData = {
   
   timeline: [
     {
-      date: "2000 - 2010",
+      date: "2005 - 2015",
       title: "Early Beginnings",
       category: "life",
       description: "Discovered my passion for technology and problem-solving. Started exploring computers, learning basic programming concepts, and developing a curiosity for how things work.",
       icon: "🌱"
     },
     {
-      date: "2015 - 2018",
+      date: "2019 - 2023",
       title: "High School Education",
       category: "education",
       description: "Completed high school with focus on mathematics and sciences. Participated in coding clubs and tech competitions, solidifying my interest in software development.",
       icon: "📚"
     },
     {
-      date: "2018 - 2022",
-      title: "Bachelor's Degree in Computer Science",
+      date: "2023 - 2024",
+      title: "Start Studing Computer Science in Cairo Higher Institute (CHI)",
+      category: "education",
+      description: "Pursued degree in Computer Science. Studied data structures, algorithms, web development, and software engineering principles. Graduated with honors.",
+      icon: "🎓"
+    },
+    {
+      date: "2024 - now",
+      title: "Start Studing Computer Science in Higher Technological Institute (HTI)",
       category: "education",
       description: "Pursued degree in Computer Science. Studied data structures, algorithms, web development, and software engineering principles. Graduated with honors.",
       icon: "🎓"
@@ -237,11 +248,7 @@ const portfolioData = {
       category: "project",
       description: "Built a comprehensive E-Commerce Platform with payment integration, inventory management, and analytics dashboard. This project significantly enhanced my full-stack development skills.",
       projectId: "ecommerce", // Auto-links to e-commerce project!
-      icon: "🛒",
-      media: {
-        type: "youtube",
-        url: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Example YouTube - replace with your demo!
-      }
+      icon: "🛒"
     },
     {
       date: "2024",
