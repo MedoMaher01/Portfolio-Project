@@ -60,6 +60,137 @@ const portfolioData = {
           id: "web-portfolio",
           title: "Personal Portfolio Website",
           subtitle: "Responsive portfolio showcasing skills and projects",
+          // نظام المحتوى الغني الجديد - يدعم أنواع متعددة من المحتوى
+          sections: [
+            {
+              type: "heading",
+              level: 2,
+              value: "📋 Overview"
+            },
+            {
+              type: "text",
+              value: "A modern, fully responsive portfolio website built from scratch using HTML5, CSS3, and vanilla JavaScript. This project showcases my skills and projects in a professional, user-friendly interface."
+            },
+            {
+              type: "heading",
+              level: 2,
+              value: "✨ Key Features"
+            },
+            {
+              type: "list",
+              ordered: false,
+              items: [
+                "Interactive timeline showcasing professional journey",
+                "Projects gallery organized by skill categories",
+                "Smooth scroll animations and transitions",
+                "Comprehensive SEO optimization",
+                "Mobile-first responsive design",
+                "Accessibility features (ARIA labels, semantic HTML)",
+                "Dynamic content rendering from centralized data file"
+              ]
+            },
+            {
+              type: "heading",
+              level: 2,
+              value: "🎯 Design Philosophy"
+            },
+            {
+              type: "text",
+              value: "The design follows mobile-first principles with a strong focus on user experience and accessibility. Every element is carefully crafted to ensure smooth navigation and clear information hierarchy."
+            },
+            {
+              type: "heading",
+              level: 3,
+              value: "Color Scheme"
+            },
+            {
+              type: "text",
+              value: "The website uses a professional color palette with high contrast ratios to ensure readability and visual appeal across all devices."
+            },
+            {
+              type: "heading",
+              level: 2,
+              value: "💻 Technical Implementation"
+            },
+            {
+              type: "text",
+              value: "The project is built with vanilla JavaScript to demonstrate core web development skills without relying on frameworks. Here's an example of the dynamic rendering system:"
+            },
+            {
+              type: "code",
+              language: "javascript",
+              value: "// Dynamic project rendering\nfunction renderProjectCard(project) {\n  return `\n    <article class=\"project-card\">\n      <h3>${project.title}</h3>\n      <p>${project.subtitle}</p>\n      <div class=\"tech-stack\">\n        ${project.techStack.map(tech => \n          `<span class=\"badge\">${tech}</span>`\n        ).join('')}\n      </div>\n    </article>\n  `;\n}"
+            },
+            {
+              type: "heading",
+              level: 2,
+              value: "📊 Project Structure"
+            },
+            {
+              type: "list",
+              ordered: true,
+              items: [
+                "index.html - Main landing page",
+                "my-journey.html - Interactive timeline page",
+                "projects.html - Projects showcase page",
+                "project.html - Individual project details",
+                "data.js - Centralized content management",
+                "render.js - Dynamic rendering engine",
+                "styles.css - Main stylesheet"
+              ]
+            },
+            {
+              type: "heading",
+              level: 2,
+              value: "🚀 Performance Optimization"
+            },
+            {
+              type: "text",
+              value: "Several optimization techniques were implemented to ensure fast loading times:"
+            },
+            {
+              type: "list",
+              ordered: false,
+              items: [
+                "Lazy loading for images and videos",
+                "Minified CSS and JavaScript files",
+                "Optimized image formats and sizes",
+                "Efficient DOM manipulation strategies",
+                "Intersection Observer for scroll animations"
+              ]
+            },
+            {
+              type: "heading",
+              level: 2,
+              value: "📱 Responsive Design"
+            },
+            {
+              type: "text",
+              value: "The website is fully responsive and optimized for all screen sizes. The mobile navigation uses a hamburger menu, and all content adapts seamlessly to different viewports."
+            },
+            {
+              type: "heading",
+              level: 2,
+              value: "🎓 What I Learned"
+            },
+            {
+              type: "text",
+              value: "This project enhanced my understanding of:"
+            },
+            {
+              type: "list",
+              ordered: false,
+              items: [
+                "Semantic HTML5 structure and best practices",
+                "CSS Grid and Flexbox for modern layouts",
+                "Vanilla JavaScript DOM manipulation",
+                "SEO optimization techniques",
+                "Web accessibility standards (WCAG)",
+                "Performance optimization strategies"
+              ]
+            }
+          ],
+          // حقل description للتوافق مع النظام القديم (Backward Compatibility)
           description: "A modern, fully responsive portfolio website built from scratch using HTML5, CSS3, and vanilla JavaScript. Features include an interactive timeline showcasing my professional journey, a projects gallery organized by skills, smooth scroll animations, and comprehensive SEO optimization. The design follows mobile-first principles with a focus on accessibility and user experience.",
           techStack: ["HTML5", "CSS3", "JavaScript", "Responsive Design", "SEO"],
           links: [

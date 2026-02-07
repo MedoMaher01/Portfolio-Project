@@ -568,9 +568,16 @@ function renderProjectDetailPage() {
   // Render project links
   renderProjectLinks(project);
   
-  // Render description
+  
+  // Render description or sections (Rich Content System)
   const descriptionElement = document.getElementById('project-description');
-  descriptionElement.innerHTML = project.fullDescription || project.description;
+  if (project.sections && project.sections.length > 0) {
+    // نظام المحتوى الغني الجديد
+    renderProjectSections(project.sections, descriptionElement);
+  } else {
+    // التوافق مع النظام القديم (Fallback)
+    descriptionElement.innerHTML = project.fullDescription || project.description;
+  }
   
   // Render gallery (if exists)
   if (project.gallery && project.gallery.length > 0) {
@@ -765,3 +772,174 @@ function setupProjectNavigation(currentProjectId) {
     nextBtn.style.display = 'none';
   }
 }
+
+// ========================================
+// RICH CONTENT RENDERING SYSTEM
+// ========================================
+// نظام عرض المحتوى الغني - يدعم أنواع متعددة من المحتوى
+
+/**
+ * محرك العرض الرئيسي - يعرض جميع الأقسام ديناميكياً
+ * @param {Array} sections - مصفوفة الأقسام
+ * @param {HTMLElement} container - العنصر الحاوي
+ */
+function renderProjectSections(sections, container) {
+  container.innerHTML = '';
+  container.classList.add('rich-content');
+  
+  sections.forEach(section => {
+    let element;
+    
+    switch(section.type) {
+      case 'heading':
+        element = renderHeading(section);
+        break;
+      case 'text':
+        element = renderText(section);
+        break;
+      case 'image':
+        element = renderImage(section);
+        break;
+      case 'video':
+        element = renderVideo(section);
+        break;
+      case 'list':
+        element = renderList(section);
+        break;
+      case 'code':
+        element = renderCode(section);
+        break;
+      default:
+        console.warn('Unknown section type:', section.type);
+        return;
+    }
+    
+    if (element) {
+      container.appendChild(element);
+    }
+  });
+}
+
+/**
+ * عرض العناوين (h2, h3, h4)
+ */
+function renderHeading(section) {
+  const level = section.level || 2;
+  const heading = document.createElement(`h${level}`);
+  heading.textContent = section.value;
+  heading.className = 'section-heading';
+  return heading;
+}
+
+/**
+ * عرض النص (فقرة)
+ */
+function renderText(section) {
+  const p = document.createElement('p');
+  p.textContent = section.value;
+  p.className = 'section-text';
+  return p;
+}
+
+/**
+ * عرض الصور مع caption
+ */
+function renderImage(section) {
+  const figure = document.createElement('figure');
+  figure.className = 'section-image';
+  
+  const img = document.createElement('img');
+  img.src = section.src;
+  img.alt = section.alt || 'Project image';
+  img.loading = 'lazy';
+  
+  figure.appendChild(img);
+  
+  if (section.caption) {
+    const figcaption = document.createElement('figcaption');
+    figcaption.textContent = section.caption;
+    figure.appendChild(figcaption);
+  }
+  
+  return figure;
+}
+
+/**
+ * عرض الفيديو (YouTube أو محلي)
+ */
+function renderVideo(section) {
+  const container = document.createElement('div');
+  container.className = 'section-video';
+  
+  if (section.platform === 'youtube') {
+    const iframe = document.createElement('iframe');
+    iframe.src = section.src;
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('loading', 'lazy');
+    iframe.title = section.caption || 'Video';
+    
+    container.appendChild(iframe);
+  } else {
+    // فيديو محلي
+    const video = document.createElement('video');
+    video.src = section.src;
+    video.controls = true;
+    video.setAttribute('loading', 'lazy');
+    
+    container.appendChild(video);
+  }
+  
+  if (section.caption) {
+    const caption = document.createElement('p');
+    caption.className = 'video-caption';
+    caption.textContent = section.caption;
+    container.appendChild(caption);
+  }
+  
+  return container;
+}
+
+/**
+ * عرض القوائم (مرتبة أو غير مرتبة)
+ */
+function renderList(section) {
+  const list = document.createElement(section.ordered ? 'ol' : 'ul');
+  list.className = 'section-list';
+  
+  section.items.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    list.appendChild(li);
+  });
+  
+  return list;
+}
+
+/**
+ * عرض كتل الكود مع syntax highlighting بسيط
+ */
+function renderCode(section) {
+  const container = document.createElement('div');
+  container.className = 'section-code';
+  
+  // إضافة label للغة البرمجة
+  if (section.language) {
+    const label = document.createElement('div');
+    label.className = 'code-language';
+    label.textContent = section.language;
+    container.appendChild(label);
+  }
+  
+  const pre = document.createElement('pre');
+  const code = document.createElement('code');
+  code.className = section.language ? `language-${section.language}` : '';
+  code.textContent = section.value;
+  
+  pre.appendChild(code);
+  container.appendChild(pre);
+  
+  return container;
+}
+
