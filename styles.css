@@ -145,6 +145,7 @@ button {
 .navbar {
   display: flex;
   gap: var(--spacing-sm);
+  transition: 0.3s;
 }
 
 .navbar ul {
@@ -152,6 +153,11 @@ button {
   display: flex;
   gap: var(--spacing-sm);
   align-items: center;
+}
+
+/* Mobile menu active state */
+#nav-menu.active {
+  display: flex !important;
 }
 
 .navbar a {
@@ -590,13 +596,20 @@ footer a:hover {
   }
   
   .navbar {
-    display: none;
     width: 100%;
     margin-top: var(--spacing-md);
   }
   
-  .navbar.active {
-    display: flex;
+  #nav-menu {
+    display: none;
+    transition: 0.3s;
+  }
+  
+  #nav-menu.active {
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--spacing-sm);
   }
   
   .navbar ul {

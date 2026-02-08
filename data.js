@@ -95,9 +95,24 @@ const portfolioData = {
               ]
             },
             {
+              "type": "heading",
+              "level": 4,
+              "value": "My custom-built dashboard running on the tablet server"
+            },
+            {
+              "type": "image",
+              "src": "Image\\Screenshot  (1).png",
+              "alt": "Image"
+            },
+            {
+              "type": "image",
+              "src": "Image\\Screenshot  (2).png",
+              "alt": "Image"
+            },
+            {
               "type": "code",
               "language": "Bash",
-              "value": "# Example: Restarting the server services\nservice apache2 restart\nservice smbd restart"
+              "value": "# Example: Restarting the server services\nservice apache2 restart\nservice smbd restart\ntailscale up --advertise-exit-node"
             }
           ]
         }
