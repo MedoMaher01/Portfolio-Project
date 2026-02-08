@@ -16,7 +16,7 @@ const portfolioData = {
     "email": "anshtaun00@gmail.com",
     "github": "MedoMaher01",
     "linkedin": "x0maro",
-    "siteUrl": "https://yourwebsite.com",
+    "siteUrl": "https://medomaher01.github.io/Portfolio-Project/index.html",
     "description": "Professional portfolio of Ahmed Maher, a passionate Software Developer specializing in Full-Stack Development & Web Solutions.",
     "keywords": "portfolio, web developer, projects, Ahmed Maher, Software Developer, Full-Stack Development"
   },
@@ -278,7 +278,7 @@ const portfolioData = {
             },
             {
               "type": "demo",
-              "url": "#",
+              "url": "https://medomaher01.github.io/Portfolio-Project/index.html",
               "label": "Live Demo"
             }
           ],
