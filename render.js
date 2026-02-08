@@ -482,7 +482,7 @@ function initializePage() {
 // ========================================
 
 function initializeMobileNav() {
-  const mobileToggle = document.querySelector('.mobile-nav-toggle');
+  const mobileToggle = document.querySelector('#menu-btn') || document.querySelector('.mobile-nav-toggle');
   const navbar = document.querySelector('.navbar');
   
   if (mobileToggle && navbar) {
