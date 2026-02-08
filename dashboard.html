@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Dashboard - Advanced Project Management</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="Image/Logo Without BG.png" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dashboard.css">
+  
+  <style>
+    /* Additional styles for new features */
+    .block-controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .block-controls button {
+      padding: 0.25rem 0.5rem;
+      background: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    
+    .block-controls button:hover {
+      background: #4f46e5;
+    }
+    
+    .block-controls button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    
+    .text-formatting {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .text-formatting button,
+    .text-formatting select {
+      padding: 0.4rem 0.8rem;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    
+    .text-formatting button:hover {
+      background: #f3f4f6;
+      border-color: #6366f1;
+    }
+    
+    .text-formatting button.active {
+      background: #6366f1;
+      color: white;
+      border-color: #6366f1;
+    }
+    
+    .nested-list-item {
+      margin-left: 2rem;
+      padding: 0.5rem;
+      border-left: 2px solid #e5e7eb;
+    }
+    
+    .list-item-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .list-item-controls input {
+      flex: 1;
+    }
+    
+    .list-item-controls button {
+      padding: 0.3rem 0.6rem;
+      background: #10b981;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    
+    .list-item-display {
+      padding: 0.5rem;
+      background: #f9fafb;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .list-item-display .actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .list-item-display .actions button {
+      padding: 0.2rem 0.5rem;
+      font-size: 0.8rem;
+      background: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    
+    .list-item-display .actions button.delete {
+      background: #ef4444;
+    }
+    
+    .sub-items {
+      margin-left: 1.5rem;
+      margin-top: 0.5rem;
+      border-left: 2px solid #d1d5db;
+      padding-left: 1rem;
+    }
+    
+    .preview-content.rich-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .preview-content.rich-content h1,
+    .preview-content.rich-content h2,
+    .preview-content.rich-content h3,
+    .preview-content.rich-content h4,
+    .preview-content.rich-content h5,
+    .preview-content.rich-content h6 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: #1f2937;
+      font-weight: 600;
+    }
+    
+    .preview-content.rich-content h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+    }
+    
+    .preview-content.rich-content h2 {
+      font-size: 1.875rem;
+    }
+    
+    .preview-content.rich-content h3 {
+      font-size: 1.5rem;
+    }
+    
+    .preview-content.rich-content h4 {
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+    
+    .preview-content.rich-content h5 {
+      font-size: 1.125rem;
+      font-weight: 500;
+    }
+    
+    .preview-content.rich-content h6 {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    
+    .preview-content.rich-content p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      color: #4b5563;
+    }
+    
+    .preview-content.rich-content ul,
+    .preview-content.rich-content ol {
+      margin-bottom: 1rem;
+      margin-left: 2rem;
+      padding-left: 1rem;
+    }
+    
+    .preview-content.rich-content ul ul,
+    .preview-content.rich-content ol ol,
+    .preview-content.rich-content ul ol,
+    .preview-content.rich-content ol ul {
+      margin-left: 2rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .preview-content.rich-content li {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+    
+    .preview-content.rich-content pre {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    
+    .preview-content.rich-content code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+    
+    .preview-content.rich-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    
+    .preview-content.rich-content .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    
+    .preview-content.rich-content .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .block-item {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .block-item h5 {
+      margin: 0 0 0.5rem 0;
+      color: #6366f1;
+      font-size: 0.9rem;
+    }
+    
+    .font-size-small {
+      font-size: 0.875rem;
+    }
+    
+    .font-size-medium {
+      font-size: 1rem;
+    }
+    
+    .font-size-large {
+      font-size: 1.25rem;
+    }
+    
+    .text-bold {
+      font-weight: 700;
+    }
+    
+    .text-italic {
+      font-style: italic;
+    }
+    
+    .preview-content a {
+      color: #3b82f6;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    
+    .preview-content a:hover {
+      color: #2563eb;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body class="dashboard-body">
+  
+  <!-- Dashboard Container -->
+  <div class="dashboard-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <h1>🎛️ Dashboard</h1>
+        <p>Advanced Content Manager</p>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-section="import" onclick="switchSection('import')">
+          <span class="nav-icon">📥</span>
+          <span class="nav-label">Import Data</span>
+        </button>
+        
+        <button class="nav-item" data-section="about" onclick="switchSection('about')">
+          <span class="nav-icon">👤</span>
+          <span class="nav-label">About Me</span>
+        </button>
+        
+        <button class="nav-item" data-section="timeline" onclick="switchSection('timeline')">
+          <span class="nav-icon">📅</span>
+          <span class="nav-label">Timeline</span>
+        </button>
+        
+        <button class="nav-item" data-section="projects" onclick="switchSection('projects')">
+          <span class="nav-icon">💼</span>
+          <span class="nav-label">Projects</span>
+        </button>
+        
+        <button class="nav-item" data-section="categories" onclick="switchSection('categories')">
+          <span class="nav-icon">📂</span>
+          <span class="nav-label">Categories</span>
+        </button>
+        
+        <button class="nav-item" data-section="tags" onclick="switchSection('tags')">
+          <span class="nav-icon">🏷️</span>
+          <span class="nav-label">Timeline Tags</span>
+        </button>
+        
+        <button class="nav-item" data-section="export" onclick="switchSection('export')">
+          <span class="nav-icon">📤</span>
+          <span class="nav-label">Export Code</span>
+        </button>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button class="btn-secondary" onclick="clearLocalStorage()">
+          🗑️ Clear Cache
+        </button>
+        <a href="index.html" class="btn-link">← Back to Site</a>
+      </div>
+    </aside>
+    
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+      
+      <!-- Import Section -->
+      <section id="section-import" class="dashboard-section active">
+        <div class="section-header">
+          <h2>📥 Import Data</h2>
+          <p>Paste the content of your data.js file to start editing</p>
+        </div>
+        
+        <div class="import-area">
+          <label for="data-import">Paste your data.js content below:</label>
+          <textarea 
+            id="data-import" 
+            placeholder="Paste the entire portfolioData object here...&#10;&#10;const portfolioData = {&#10;  personal: { ... },&#10;  timeline: [ ... ],&#10;  categories: [ ... ]&#10;};"
+            rows="15"
+          ></textarea>
+          
+          <div class="import-actions">
+            <button class="btn-primary" onclick="importData()">
+              ✓ Load Data
+            </button>
+            <button class="btn-secondary" onclick="loadSampleData()">
+              📋 Load Sample Data
+            </button>
+          </div>
+          
+          <div id="import-status" class="status-message"></div>
+        </div>
+      </section>
+      
+      <!-- About Me Section -->
+      <section id="section-about" class="dashboard-section">
+        <div class="section-header">
+          <h2>👤 Personal Information</h2>
+          <p>Edit your profile and contact details</p>
+        </div>
+        
+        <div class="form-container">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="about-name" placeholder="Ahmed Maher">
+            </div>
+            
+            <div class="form-group">
+              <label>Profession</label>
+              <input type="text" id="about-profession" placeholder="Software Developer">
+            </div>
+            
+            <div class="form-group">
+              <label>Tagline</label>
+              <input type="text" id="about-tagline" placeholder="Full-Stack Development & Web Solutions">
+            </div>
+            
+            <div class="form-group">
+              <label>Background</label>
+              <input type="text" id="about-background" placeholder="Computer Science & Software Engineering">
+            </div>
+            
+            <div class="form-group full-width">
+              <label>Bio</label>
+              <textarea id="about-bio" rows="4" placeholder="Tell us about yourself..."></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="about-email" placeholder="your@email.com">
+            </div>
+            
+            <div class="form-group">
+              <label>GitHub Username</label>
+              <input type="text" id="about-github" placeholder="YourGitHub">
+            </div>
+            
+            <div class="form-group">
+              <label>LinkedIn Username</label>
+              <input type="text" id="about-linkedin" placeholder="YourLinkedIn">
+            </div>
+            
+            <div class="form-group">
+              <label>Profile Image URL</label>
+              <input type="text" id="about-profileImage" placeholder="Image/Portfolio img.jpg" onchange="previewMedia(this, 'preview-profile')">
+              <div id="preview-profile" class="media-preview"></div>
+            </div>
+            
+            <div class="form-group">
+              <label>Logo URL</label>
+              <input type="text" id="about-logo" placeholder="Image/Logo.png" onchange="previewMedia(this, 'preview-logo')">
+              <div id="preview-logo" class="media-preview"></div>
+            </div>
+          </div>
+          
+          <button class="btn-save" onclick="saveAbout()">💾 Save Changes</button>
+        </div>
+      </section>
+      
+      <!-- Timeline Section -->
+      <section id="section-timeline" class="dashboard-section">
+        <div class="section-header">
+          <h2>📅 Timeline Events</h2>
+          <p>Manage your professional journey</p>
+          <button class="btn-primary" onclick="showTimelineForm()">+ Add Event</button>
+        </div>
+        
+        <!-- Timeline Form (Hidden by default) -->
+        <div id="timeline-form" class="editor-form" style="display: none;">
+          <h3>Add/Edit Timeline Event</h3>
+          <input type="hidden" id="timeline-edit-index" value="-1">
+          
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Period</label>
+              <input type="text" id="timeline-period" placeholder="2020 - Present">
+            </div>
+            
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" id="timeline-title" placeholder="Software Developer">
+            </div>
+            
+            <div class="form-group">
+              <label>Icon (Emoji)</label>
+              <input type="text" id="timeline-icon" placeholder="💼">
+            </div>
+            
+            <div class="form-group">
+              <label>Category/Tag</label>
+              <select id="timeline-category">
+                <option value="">Select Category</option>
+                <!-- Will be populated dynamically from categoryTags -->
+              </select>
+            </div>
+            
+            <div class="form-group full-width">
+              <label>Description</label>
+              <textarea id="timeline-description" rows="3" placeholder="What did you accomplish?"></textarea>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button class="btn-primary" onclick="saveTimelineEvent()">✓ Save Event</button>
+            <button class="btn-secondary" onclick="cancelTimelineForm()">✕ Cancel</button>
+          </div>
+        </div>
+        
+        <!-- Timeline List -->
+        <div id="timeline-list" class="items-list"></div>
+      </section>
+      
+      <!-- Projects Section -->
+      <section id="section-projects" class="dashboard-section">
+        <div class="section-header">
+          <h2>💼 Projects</h2>
+          <p>Manage your project portfolio</p>
+          <button class="btn-primary" onclick="showProjectForm()">+ Add Project</button>
+        </div>
+        
+        <!-- Projects List -->
+        <div id="projects-list" class="items-list"></div>
+        
+        <!-- Project Editor Modal -->
+        <div id="project-modal" class="modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Project Editor</h3>
+              <button class="modal-close" onclick="closeProjectModal()">✕</button>
+            </div>
+            
+            <div class="modal-body modal-body-dual-panel">
+              <!-- LEFT PANEL: Editor Form -->
+              <div class="project-editor-form">
+                <input type="hidden" id="project-edit-category" value="">
+                <input type="hidden" id="project-edit-index" value="-1">
+                
+                <!-- Basic Info -->
+                <h4>Basic Information</h4>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Project ID</label>
+                    <input type="text" id="project-id" placeholder="my-project">
+                    <small>Lowercase with hyphens</small>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="project-title" placeholder="My Project" oninput="updatePreview()">
+                  </div>
+                  
+                  <div class="form-group full-width">
+                    <label>Subtitle</label>
+                    <input type="text" id="project-subtitle" placeholder="Brief description" oninput="updatePreview()">
+                  </div>
+                  
+                  <div class="form-group full-width">
+                    <label>Description (Fallback)</label>
+                    <textarea id="project-description" rows="3"></textarea>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label>Category</label>
+                    <select id="project-category-select">
+                      <option value="">Select Category</option>
+                      <!-- Will be populated dynamically -->
+                    </select>
+                    <small>Choose which category this project belongs to</small>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label>Icon/Image URL</label>
+                    <input type="text" id="project-icon" placeholder="Image/project.png" onchange="previewMedia(this, 'preview-project-icon')">
+                    <div id="preview-project-icon" class="media-preview"></div>
+                  </div>
+                </div>
+                
+                <!-- Tech Stack -->
+                <h4>Tech Stack</h4>
+                <div class="array-input-group">
+                  <input type="text" id="project-tech-input" placeholder="Technology">
+                  <button class="btn-add" onclick="addProjectTech()">+ Add</button>
+                </div>
+                <div id="project-tech-list" class="tags-list"></div>
+                
+                <!-- Links -->
+                <h4>Links</h4>
+                <div class="link-input-group">
+                  <select id="project-link-type">
+                    <option value="github">GitHub</option>
+                    <option value="demo">Demo</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="behance">Behance</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="pdf">PDF</option>
+                    <option value="drive">Drive</option>
+                  </select>
+                  <input type="url" id="project-link-url" placeholder="URL">
+                  <input type="text" id="project-link-label" placeholder="Label (optional)">
+                  <button class="btn-add" onclick="addProjectLink()">+ Add</button>
+                </div>
+                <div id="project-links-list" class="list-items"></div>
+                
+                <!-- Sections (Rich Content) -->
+                <h4>Content Sections</h4>
+                <div class="section-type-selector">
+                  <button class="btn-section-small" onclick="showProjectSectionForm('heading')">📌 Heading</button>
+                  <button class="btn-section-small" onclick="showProjectSectionForm('text')">📝 Text</button>
+                  <button class="btn-section-small" onclick="showProjectSectionForm('list')">📋 List</button>
+                  <button class="btn-section-small" onclick="showProjectSectionForm('code')">💻 Code</button>
+                  <button class="btn-section-small" onclick="showProjectSectionForm('image')">🖼️ Image</button>
+                  <button class="btn-section-small" onclick="showProjectSectionForm('video')">🎬 Video</button>
+                </div>
+                
+                <div id="project-section-form"></div>
+                <div id="project-sections-list" class="sections-list-compact"></div>
+              </div>
+              
+              <!-- RIGHT PANEL: Live Preview -->
+              <div class="project-preview-panel">
+                <div class="preview-header">
+                  <h4>👁️ Live Preview</h4>
+                  <small>See your content as it will appear</small>
+                </div>
+                <div id="project-preview-content" class="preview-content rich-content">
+                  <p class="empty-state">Add sections to see preview...</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="modal-footer">
+              <button class="btn-primary" onclick="saveProject()">💾 Save Project</button>
+              <button class="btn-secondary" onclick="closeProjectModal()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Categories Management Section -->
+      <section id="section-categories" class="dashboard-section">
+        <div class="section-header">
+          <h2>📂 Project Categories</h2>
+          <p>Manage project categories and their configurations</p>
+          <button class="btn-primary" onclick="showCategoryForm()">+ Add Category</button>
+        </div>
+        
+        <!-- Category Form (Hidden by default) -->
+        <div id="category-form" class="editor-form" style="display: none;">
+          <h3>Add/Edit Category</h3>
+          <input type="hidden" id="category-edit-key" value="">
+          
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Category Key (ID)</label>
+              <input type="text" id="category-key" placeholder="programming">
+              <small>Lowercase, no spaces (e.g., programming, design)</small>
+            </div>
+            
+            <div class="form-group">
+              <label>Icon (Emoji)</label>
+              <input type="text" id="category-icon" placeholder="💻">
+            </div>
+            
+            <div class="form-group full-width">
+              <label>Title</label>
+              <input type="text" id="category-title" placeholder="Programming Projects">
+            </div>
+            
+            <div class="form-group full-width">
+              <label>Description</label>
+              <textarea id="category-description" rows="2" placeholder="Software development and web applications"></textarea>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button class="btn-primary" onclick="saveCategory()">✓ Save Category</button>
+            <button class="btn-secondary" onclick="cancelCategoryForm()">✕ Cancel</button>
+          </div>
+        </div>
+        
+        <!-- Categories List -->
+        <div id="categories-list" class="items-list"></div>
+      </section>
+      
+      <!-- Timeline Tags Management Section -->
+      <section id="section-tags" class="dashboard-section">
+        <div class="section-header">
+          <h2>🏷️ Timeline Tags</h2>
+          <p>Manage timeline event categories and their colors</p>
+          <button class="btn-primary" onclick="showTagForm()">+ Add Tag</button>
+        </div>
+        
+        <!-- Tag Form (Hidden by default) -->
+        <div id="tag-form" class="editor-form" style="display: none;">
+          <h3>Add/Edit Timeline Tag</h3>
+          <input type="hidden" id="tag-edit-key" value="">
+          
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Tag Key</label>
+              <input type="text" id="tag-key" placeholder="life">
+              <small>Lowercase, no spaces</small>
+            </div>
+            
+            <div class="form-group">
+              <label>Label</label>
+              <input type="text" id="tag-label" placeholder="Life">
+            </div>
+            
+            <div class="form-group">
+              <label>Color</label>
+              <input type="color" id="tag-color" value="#4a90e2" oninput="updateTagColorPreview()">
+            </div>
+            
+            <div class="form-group">
+              <label>Color Preview</label>
+              <div id="tag-color-preview" style="padding: 1rem; border-radius: 4px; background: #4a90e2; color: white; text-align: center; font-weight: 600;">
+                Preview
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button class="btn-primary" onclick="saveTag()">✓ Save Tag</button>
+            <button class="btn-secondary" onclick="cancelTagForm()">✕ Cancel</button>
+          </div>
+        </div>
+        
+        <!-- Tags List -->
+        <div id="tags-list" class="items-list"></div>
+      </section>
+      
+      <!-- Export Section -->
+      <section id="section-export" class="dashboard-section">
+        <div class="section-header">
+          <h2>📤 Export Code</h2>
+          <p>Generate your updated data.js file</p>
+        </div>
+        
+        <div class="export-area">
+          <button class="btn-primary btn-large" onclick="generateDataJS()">
+            🚀 Generate data.js Code
+          </button>
+          
+          <div id="export-output" class="code-output" style="display: none;">
+            <div class="output-header">
+              <h3>Generated Code</h3>
+              <button class="btn-copy" onclick="copyExportCode()">📋 Copy to Clipboard</button>
+            </div>
+            <pre id="export-code"><code></code></pre>
+          </div>
+        </div>
+      </section>
+      
+    </main>
+  </div>
+  
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="render.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
