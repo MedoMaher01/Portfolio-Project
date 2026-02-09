@@ -49,6 +49,9 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css" />
     
+    <!-- Marked.js for Markdown Support -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+    
     <!-- Data & Rendering Scripts -->
     <script src="data.js"></script>
     <script src="render.js"></script>
@@ -71,12 +74,13 @@
         </a>
       </nav>
       
-      <button id="menu-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <button class="mobile-nav-toggle" aria-label="Toggle navigation menu">
         ☰
       </button>
       
       <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <ul id="nav-menu">
+        <button class="mobile-menu-close" aria-label="Close menu">✕</button>
+        <ul>
           <li><a href="#about">About</a></li>
           <li><a href="#projects">Projects</a></li>
           <li><a href="#contact">Contact</a></li>

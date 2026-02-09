@@ -279,6 +279,111 @@ Upload all files via FTP to your web server.
 
 ---
 
+## 📋 Changelog
+
+### Version 1.3.2 (February 2026)
+
+**🐛 Bug Fixes:**
+- **Mobile Menu Consistency**: Fixed mobile sidebar functionality across all website pages
+  - Standardized mobile menu button class to `.mobile-nav-toggle` across all HTML files
+  - Updated `initializeMobileNav()` function in `render.js` to use correct class selector
+  - Added mobile menu close button to `index.html` for consistency
+  - Verified proper event listener placement in `app.js` within `DOMContentLoaded`
+  - Ensured all pages (`index.html`, `project.html`, `my-journey.html`, `projects.html`) have matching mobile navigation structure
+  - Fixed sidebar toggle behavior to work reliably on all devices and screen sizes
+
+**🔧 Technical Improvements:**
+- Cleaned up legacy ID selectors (`#menu-btn`) in favor of modern class-based approach
+- Improved JavaScript modularity and event handling consistency
+- Enhanced mobile user experience with uniform navigation behavior
+
+---
+
+### Version 1.3.1 (February 2026)
+
+**🐛 Bug Fixes:**
+- **Navigation Button Visibility**: Fixed invisible text on Next/Previous Project buttons
+  - Changed button style from solid to outline design for dark theme compatibility
+  - Updated default text color from white to accent blue (#4a90e2) for immediate visibility
+  - Implemented transparent background with blue border for cleaner, modern appearance
+  - Enhanced hover effect: buttons fill with blue background and white text
+  - Improved visual hierarchy and spacing in project navigation section
+
+**🎨 Style Enhancements:**
+- Refined navigation button aesthetics to match dark theme design language
+- Added subtle shadow effects for better depth perception
+- Optimized button transitions for smoother user interactions
+
+---
+
+### Version 1.3.0 (February 2026)
+
+**🎨 Visual Improvements:**
+- **Dark Theme Unification**: Converted all project detail pages to match the main dark theme
+  - Implemented consistent gradient background: `linear-gradient(135deg, #1a3d63, #0a1931)`
+  - Updated all text colors for high contrast and readability
+  - Enhanced navigation buttons and meta items with dark theme styling
+  - Eliminated "faded text" issues on light backgrounds
+
+**✨ Dashboard Enhancements:**
+- **Enlarged Description Editor**: Increased textarea height to 400px minimum for comfortable content writing
+- **Markdown Guidance**: Added built-in syntax hints directly in the editor interface
+- **Comprehensive Placeholder**: Included real-world Markdown examples for quick reference
+- **Monospace Font**: Applied `Courier New` for better code and Markdown editing experience
+
+**🗑️ Streamlined Interface:**
+- **Removed Redundant Fields**: Eliminated separate image and video upload sections
+  - All media is now embedded via Markdown syntax (`![alt](url)`)
+  - Simplified workflow focuses on single, powerful Description field
+  - Reduced dashboard complexity while maintaining full functionality
+
+**✏️ New Features:**
+- **Edit Functionality**: Added ability to edit existing content blocks without recreating them
+  - New Edit button (✏️) on each content section
+  - One-click editing loads content back into forms
+  - Update-in-place functionality preserves section order
+  - Improved workflow eliminates delete-and-recreate cycle
+
+**📱 User Experience:**
+- Enhanced live preview synchronization with Markdown rendering
+- Improved visual spacing and layout throughout dashboard
+- Better form organization and field grouping
+- Added helpful tips and guidance for Markdown users
+
+---
+
+### Version 1.2.0 (February 2026)
+
+**🎉 New Features:**
+- **Markdown Support**: Full Markdown parsing for project descriptions and content
+  - Added Marked.js library (v11.1.1) via CDN
+  - Live preview in dashboard now renders Markdown in real-time
+  - Support for headings, lists, code blocks, blockquotes, links, and more
+  - Dark theme-compatible styling for all Markdown elements
+
+- **Version Tracking**: Added site versioning system
+  - Version number displayed in footer across all pages
+  - Current version: `v1.2.0`
+
+**🐛 Bug Fixes:**
+- Fixed mobile hamburger menu functionality
+  - Menu now properly toggles on mobile devices
+  - Improved responsive navigation experience
+
+**🎨 Styling Improvements:**
+- Added comprehensive CSS for Markdown rendering:
+  - Code blocks with syntax highlighting colors
+  - Styled ordered and unordered lists
+  - Beautiful blockquotes with left border accent
+  - Inline code with contrasting background
+  - Professional link styling with hover effects
+
+**📝 Content Updates:**
+- Enhanced README with Changelog section
+- Updated documentation to reflect new Markdown capabilities
+
+---
+
 ## 📄 License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.

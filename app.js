@@ -3,38 +3,29 @@
 // ========================================
 
 window.addEventListener('DOMContentLoaded', function() {
-  // Get menu elements
-  const menuToggle = document.getElementById('menu-toggle');
-  const navMenu = document.getElementById('nav-menu');
+  const menuToggle = document.querySelector('.mobile-nav-toggle');
+  const navMenu = document.querySelector('.navbar');
+  const closeBtn = document.querySelector('.mobile-menu-close');
   
-  // Check if elements exist
+  // Toggle menu on button click
   if (menuToggle && navMenu) {
-    console.log('Menu elements found and ready');
-    
-    // Add click event listener
     menuToggle.addEventListener('click', function() {
-      console.log('Menu clicked');
-      
-      // Toggle active class
       navMenu.classList.toggle('active');
-      
-      // Update aria-expanded for accessibility
-      const isExpanded = navMenu.classList.contains('active');
-      menuToggle.setAttribute('aria-expanded', isExpanded);
     });
     
-    // Close menu when clicking on a link (smooth UX)
+    // Close menu when clicking close button
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function() {
+        navMenu.classList.remove('active');
+      });
+    }
+    
+    // Close menu when clicking on a link
     const navLinks = navMenu.querySelectorAll('a');
     navLinks.forEach(link => {
       link.addEventListener('click', function() {
         navMenu.classList.remove('active');
-        menuToggle.setAttribute('aria-expanded', 'false');
       });
-    });
-  } else {
-    console.error('Menu elements not found:', {
-      menuToggle: !!menuToggle,
-      navMenu: !!navMenu
     });
   }
 });

@@ -51,6 +51,9 @@
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="project-detail.css" />
     
+    <!-- Marked.js for Markdown Support -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+    
     <!-- Data & Rendering Scripts -->
     <script src="data.js"></script>
     <script src="render.js"></script>
@@ -73,11 +76,12 @@
         </a>
       </nav>
       
-      <button class="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <button class="mobile-nav-toggle" aria-label="Toggle navigation menu">
         ☰
       </button>
       
       <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <button class="mobile-menu-close" aria-label="Close menu">✕</button>
         <ul>
           <li><a href="index.html#about">About</a></li>
           <li><a href="my-journey.html">My Journey</a></li>
@@ -173,12 +177,24 @@
       <!-- Footer will be dynamically loaded here -->
     </footer>
     
-    <!-- Initialize Page -->
+    <!-- Mobile Menu Script -->
+    <script src="app.js"></script>
+    
+    <!-- Project Loading Script -->
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        renderProjectDetailPage();
-        initializeMobileNav();
-      });
+      // Load and render the project dynamically
+      const urlParams = new URLSearchParams(window.location.search);
+      const projectId = urlParams.get('project');
+      
+      if (projectId) {
+        renderProject(projectId);
+      } else {
+        document.getElementById('project-title').textContent = 'Project Not Found';
+      }
+
+      // Initialize Mobile Menu
+      initializeMobileNav();
+      
     </script>
   </body>
 </html>

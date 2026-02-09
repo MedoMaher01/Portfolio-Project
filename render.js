@@ -120,7 +120,7 @@ function renderFeaturedProjects() {
 }
 
 function renderFooter() {
-  const { personal } = portfolioData;
+  const { personal, siteVersion } = portfolioData;
   const footer = document.querySelector('footer');
   if (!footer) return;
   
@@ -136,6 +136,7 @@ function renderFooter() {
     <p style="margin-top: 1rem; font-size: 0.875rem; opacity: 0.8;">
       &copy; ${new Date().getFullYear()} ${personal.name}. All rights reserved.
     </p>
+    ${siteVersion ? `<p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.6;">${siteVersion}</p>` : ''}
   `;
 }
 
@@ -482,15 +483,21 @@ function initializePage() {
 // ========================================
 
 function initializeMobileNav() {
-  const mobileToggle = document.querySelector('#menu-btn') || document.querySelector('.mobile-nav-toggle');
+  const mobileToggle = document.querySelector('.mobile-nav-toggle');
   const navbar = document.querySelector('.navbar');
+  const closeBtn = document.querySelector('.mobile-menu-close');
   
   if (mobileToggle && navbar) {
     mobileToggle.addEventListener('click', () => {
       navbar.classList.toggle('active');
-      const isExpanded = navbar.classList.contains('active');
-      mobileToggle.setAttribute('aria-expanded', isExpanded);
     });
+    
+    // Close button handler
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        navbar.classList.remove('active');
+      });
+    }
   }
   
   // Smooth scroll for anchor links
@@ -517,9 +524,6 @@ function initializeMobileNav() {
         // Close mobile menu if open
         if (navbar && navbar.classList.contains('active')) {
           navbar.classList.remove('active');
-          if (mobileToggle) {
-            mobileToggle.setAttribute('aria-expanded', 'false');
-          }
         }
       }
     });
@@ -832,11 +836,16 @@ function renderHeading(section) {
 }
 
 /**
- * عرض النص (فقرة)
+ * عرض النص (فقرة) - مع دعم Markdown
  */
 function renderText(section) {
-  const p = document.createElement('p');
-  p.textContent = section.value;
+  const p = document.createElement('div');
+  // Convert Markdown to HTML if marked is available
+  if (typeof marked !== 'undefined' && section.value) {
+    p.innerHTML = marked.parse(section.value);
+  } else {
+    p.textContent = section.value;
+  }
   p.className = 'section-text';
   return p;
 }

@@ -928,6 +928,65 @@ function removeProjectSection(index) {
   }
 }
 
+/**
+ * Edit an existing project section
+ */
+function editProjectSection(index) {
+  const section = currentProject.sections[index];
+  currentSectionEditIndex = index;
+  
+  // Show the appropriate form based on section type
+  showProjectSectionForm(section.type);
+  
+  // Wait for form to render, then populate it
+  setTimeout(() => {
+    switch(section.type) {
+      case 'heading':
+        document.getElementById('section-heading-level').value = section.level;
+        document.getElementById('section-heading-value').value = section.value;
+        break;
+        
+      case 'text':
+        document.getElementById('section-text-value').value = section.value;
+        document.getElementById('text-is-bold').value = section.bold ? 'true' : 'false';
+        document.getElementById('text-is-italic').value = section.italic ? 'true' : 'false';
+        document.getElementById('text-font-size').value = section.fontSize || 'medium';
+        break;
+        
+      case 'list':
+        document.getElementById('section-list-ordered').value = section.ordered ? 'true' : 'false';
+        // Populate list items
+        listItemsData = [];
+        const container = document.getElementById('list-items-container');
+        container.innerHTML = '';
+        section.items.forEach(item => {
+          addListItemField();
+          const inputs = container.querySelectorAll('.list-item-input');
+          inputs[inputs.length - 1].value = item;
+        });
+        break;
+        
+      case 'code':
+        document.getElementById('section-code-language').value = section.language || '';
+        document.getElementById('section-code-value').value = section.value;
+        break;
+        
+      case 'image':
+        document.getElementById('section-image-src').value = section.src;
+        document.getElementById('section-image-alt').value = section.alt;
+        break;
+        
+      case 'video':
+        document.getElementById('section-video-platform').value = section.platform;
+        document.getElementById('section-video-src').value = section.src;
+        break;
+    }
+    
+    // Scroll form into view
+    document.getElementById('project-section-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+}
+
 function renderProjectSectionsList() {
   const list = document.getElementById('project-sections-list');
   
@@ -971,6 +1030,7 @@ function renderProjectSectionsList() {
         <div class="block-controls">
           <button onclick="moveBlockUp(${index})" ${index === 0 ? 'disabled' : ''} title="Move Up">↑</button>
           <button onclick="moveBlockDown(${index})" ${index === currentProject.sections.length - 1 ? 'disabled' : ''} title="Move Down">↓</button>
+          <button onclick="editProjectSection(${index})" style="background: #4a90e2;" title="Edit">✏️</button>
           <button onclick="removeProjectSection(${index})" style="background: #ef4444;" title="Remove">🗑️</button>
           <span style="flex: 1; text-align: center; font-weight: 500;">${section.type.toUpperCase()}</span>
         </div>
@@ -1008,9 +1068,16 @@ function updatePreview() {
         if (section.fontSize) textClass += ` font-size-${section.fontSize}`;
         if (section.bold) textClass += ' text-bold';
         if (section.italic) textClass += ' text-italic';
-        // Convert Markdown links to HTML
-        const textWithLinks = convertMarkdownLinksToHtml(section.value);
-        html += `<p class="${textClass}">${textWithLinks}</p>`;
+        // Convert Markdown to HTML for live preview
+        let textContent = section.value || '';
+        if (typeof marked !== 'undefined') {
+          textContent = marked.parse(textContent);
+          html += `<div class="${textClass}">${textContent}</div>`;
+        } else {
+          // Fallback: Convert Markdown links to HTML manually
+          textContent = convertMarkdownLinksToHtml(textContent);
+          html += `<p class="${textClass}">${textContent}</p>`;
+        }
         break;
         
       case 'list':

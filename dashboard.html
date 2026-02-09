@@ -26,6 +26,9 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="dashboard.css">
   
+  <!-- Marked.js for Markdown Support -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+  
   <style>
     /* Additional styles for new features */
     .block-controls {
@@ -553,8 +556,44 @@
                   </div>
                   
                   <div class="form-group full-width">
-                    <label>Description (Fallback)</label>
-                    <textarea id="project-description" rows="3"></textarea>
+                    <label>Project Description (Markdown Supported) 📝</label>
+                    <small style="color: #888; display: block; margin-bottom: 0.5rem;">
+                      <strong>Markdown Tips:</strong> **bold** | *italic* | # Heading | - List | [Link](url) | ![Image](url) | ```code```
+                    </small>
+                    <textarea 
+                      id="project-description" 
+                      rows="20" 
+                      style="min-height: 400px; font-family: 'Courier New', monospace; font-size: 0.95rem;"
+                      placeholder="## Overview
+Write your complete project description using Markdown...
+
+**Key Features:**
+- Feature 1: Description
+- Feature 2: Description
+- Feature 3: Description
+
+### Technical Details
+Explain the technical implementation...
+
+```javascript
+// Code examples
+console.log('Hello World');
+```
+
+### Screenshots
+![Screenshot 1](url/to/image.png)
+![Screenshot 2](url/to/image.png)
+
+### Demo Video
+![Demo](url/to/video.mp4)
+
+### Challenges
+- Challenge 1
+- Challenge 2
+
+### What I Learned
+Share your learnings and insights..."
+                      oninput="updatePreview()"></textarea>
                   </div>
                   
                   <div class="form-group">
@@ -600,14 +639,15 @@
                 <div id="project-links-list" class="list-items"></div>
                 
                 <!-- Sections (Rich Content) -->
-                <h4>Content Sections</h4>
+                <h4>Content Sections (Optional)</h4>
+                <small style="display: block; margin-bottom: 1rem; color: #888;">
+                  💡 Tip: Use the main Description field above for all content. These sections are optional for advanced layouts.
+                </small>
                 <div class="section-type-selector">
                   <button class="btn-section-small" onclick="showProjectSectionForm('heading')">📌 Heading</button>
                   <button class="btn-section-small" onclick="showProjectSectionForm('text')">📝 Text</button>
                   <button class="btn-section-small" onclick="showProjectSectionForm('list')">📋 List</button>
                   <button class="btn-section-small" onclick="showProjectSectionForm('code')">💻 Code</button>
-                  <button class="btn-section-small" onclick="showProjectSectionForm('image')">🖼️ Image</button>
-                  <button class="btn-section-small" onclick="showProjectSectionForm('video')">🎬 Video</button>
                 </div>
                 
                 <div id="project-section-form"></div>
