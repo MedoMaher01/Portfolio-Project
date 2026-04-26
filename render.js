@@ -1,7 +1,155 @@
 // ========================================
 // PORTFOLIO RENDERING FUNCTIONS
 // ========================================
-// This file contains functions to dynamically render HTML from data.js
+// This file contains functions to dynamically render HTML from data.json and /projects/*.md
+
+function escapeHtmlValue(value) {
+  return String(value ?? '').replace(/[&<>"']/g, character => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[character]));
+}
+
+function escapeAttribute(value) {
+  return escapeHtmlValue(value);
+}
+
+const MARKDOWN_SANITIZE_OPTIONS = {
+  ADD_TAGS: ['img'],
+  ADD_ATTR: ['src', 'alt', 'title', 'loading', 'width', 'height']
+};
+
+function isLikelyImagePath(value) {
+  return /^(?:https?:\/\/|\/|\.\.?\/|[\w-]+\/).+\.(?:png|jpe?g|gif|webp|svg|avif)(?:[?#].*)?$/i.test(value || '');
+}
+
+function normalizeMarkdownImageSyntax(markdown) {
+  let inCodeFence = false;
+
+  return markdown.split('\n').map(line => {
+    const trimmedLine = line.trim();
+
+    if (/^(?:```|~~~)/.test(trimmedLine)) {
+      inCodeFence = !inCodeFence;
+      return line;
+    }
+
+    if (inCodeFence || !trimmedLine || /^!\[/.test(trimmedLine) || /^<img\b/i.test(trimmedLine)) {
+      return line;
+    }
+
+    if (isLikelyImagePath(trimmedLine)) {
+      return `${line.match(/^\s*/)[0]}![Project image](<${trimmedLine}>)`;
+    }
+
+    return line;
+  }).join('\n');
+}
+
+function getMarkdownDirectory(markdownPath) {
+  const cleanPath = String(markdownPath || '').split(/[?#]/)[0];
+  const slashIndex = cleanPath.lastIndexOf('/');
+  return slashIndex === -1 ? '' : cleanPath.slice(0, slashIndex + 1);
+}
+
+function resolveMarkdownAssetPath(src, markdownPath) {
+  const value = String(src || '').trim();
+
+  if (!value || /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(value)) {
+    return value;
+  }
+
+  try {
+    const siteBaseUrl = new URL('.', window.location.href);
+    const isSiteRootPath = value.startsWith('/');
+    const baseUrl = isSiteRootPath
+      ? siteBaseUrl
+      : new URL(getMarkdownDirectory(markdownPath), siteBaseUrl);
+    const resolvedUrl = new URL(isSiteRootPath ? value.replace(/^\/+/, '') : value, baseUrl);
+
+    return `${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`;
+  } catch (error) {
+    console.warn('Unable to resolve Markdown asset path:', value, error);
+    return value;
+  }
+}
+
+function resolveMarkdownImagePaths(html, markdownPath) {
+  if (typeof document === 'undefined') return html;
+
+  const template = document.createElement('template');
+  template.innerHTML = html;
+
+  template.content.querySelectorAll('img[src]').forEach(img => {
+    img.setAttribute('src', resolveMarkdownAssetPath(img.getAttribute('src'), markdownPath));
+    img.setAttribute('loading', 'lazy');
+
+    if (!img.getAttribute('alt')) {
+      img.setAttribute('alt', 'Project image');
+    }
+  });
+
+  return template.innerHTML;
+}
+
+function renderSafeMarkdown(markdown, options = {}) {
+  const source = normalizeMarkdownImageSyntax(String(markdown || ''));
+
+  if (typeof marked !== 'undefined') {
+    const parsedHtml = marked.parse(source);
+    const safeHtml = typeof DOMPurify !== 'undefined'
+      ? DOMPurify.sanitize(parsedHtml, MARKDOWN_SANITIZE_OPTIONS)
+      : parsedHtml;
+
+    return resolveMarkdownImagePaths(safeHtml, options.markdownPath);
+  }
+
+  return source
+    .split(/\n{2,}/)
+    .map(paragraph => `<p>${escapeHtmlValue(paragraph).replace(/\n/g, '<br>')}</p>`)
+    .join('');
+}
+
+function isSafeProjectMarkdownPath(path) {
+  return /^projects\/[a-z0-9][a-z0-9-]*\.md$/i.test(path || '');
+}
+
+async function renderProjectMarkdown(project, container) {
+  const markdownPath = getProjectMarkdownPath(project);
+  container.classList.add('rich-content', 'markdown-content');
+
+  if (!isSafeProjectMarkdownPath(markdownPath)) {
+    container.innerHTML = `<p>${escapeHtmlValue(project.description || 'No project content available.')}</p>`;
+    return;
+  }
+
+  try {
+    const response = await fetch(markdownPath);
+    if (!response.ok) {
+      throw new Error(`Unable to load ${markdownPath} (${response.status})`);
+    }
+
+    const markdown = await response.text();
+    container.innerHTML = renderSafeMarkdown(markdown, { markdownPath });
+    enhanceMarkdownLinks(container);
+  } catch (error) {
+    console.error('Failed to render project Markdown:', error);
+    container.innerHTML = `<p>${escapeHtmlValue(project.description || 'Project content could not be loaded.')}</p>`;
+  }
+}
+
+function enhanceMarkdownLinks(container) {
+  container.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href') || '';
+    if (/^https?:\/\//i.test(href)) {
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+    }
+  });
+}
 
 // ========================================
 // PERSONAL INFO RENDERING
@@ -60,7 +208,8 @@ function updateStructuredData(personal) {
 // INDEX PAGE RENDERING
 // ========================================
 
-function renderIndexPage() {
+async function renderIndexPage() {
+  await loadPortfolioData();
   renderPersonalInfo();
   renderAboutSection();
   renderFeaturedProjects();
@@ -109,12 +258,12 @@ function renderFeaturedProjects() {
   const featured = allProjects.slice(0, 5);
   
   container.innerHTML = featured.map(project => `
-    <a href="project.html?id=${project.id}" class="project-card" role="listitem" aria-label="View ${project.title} project">
+    <a href="project.html?id=${encodeURIComponent(project.id)}" class="project-card" role="listitem" aria-label="View ${escapeAttribute(project.title)} project">
       <div class="card-icon" aria-hidden="true">
-        <img src="${project.icon}" alt="" />
+        <img src="${escapeAttribute(project.icon)}" alt="" />
       </div>
-      <h3>${project.title}</h3>
-      <p>${project.subtitle}</p>
+      <h3>${escapeHtmlValue(project.title)}</h3>
+      <p>${escapeHtmlValue(project.subtitle)}</p>
     </a>
   `).join('');
 }
@@ -144,7 +293,8 @@ function renderFooter() {
 // TIMELINE RENDERING (My Journey)
 // ========================================
 
-function renderTimelinePage() {
+async function renderTimelinePage() {
+  await loadPortfolioData();
   renderPersonalInfo();
   renderHeader();
   renderTimeline();
@@ -248,7 +398,8 @@ function initializeTimelineAnimations() {
 // PROJECTS PAGE RENDERING
 // ========================================
 
-function renderProjectsPage() {
+async function renderProjectsPage() {
+  await loadPortfolioData();
   renderPersonalInfo();
   renderHeader();
   renderProjectFilters();
@@ -276,9 +427,9 @@ function renderProjectFilters() {
   ];
   
   container.innerHTML = filters.map((filter, index) => `
-    <button class="filter-btn ${index === 0 ? 'active' : ''}" data-category="${filter.id}">
-      <span class="filter-icon">${filter.icon}</span>
-      ${filter.label}
+    <button class="filter-btn ${index === 0 ? 'active' : ''}" data-category="${escapeAttribute(filter.id)}">
+      <span class="filter-icon">${escapeHtmlValue(filter.icon)}</span>
+      ${escapeHtmlValue(filter.label)}
     </button>
   `).join('');
 }
@@ -293,15 +444,15 @@ function renderProjectsByCategory() {
   // Render each category section dynamically
   container.innerHTML = Object.entries(projectCategories)
     .map(([key, categoryData]) => `
-      <section class="project-category" data-category="${key}">
+      <section class="project-category" data-category="${escapeAttribute(key)}">
         <div class="category-header">
           <h2 class="category-title">
-            <span class="category-icon">${categoryData.icon}</span>
-            ${categoryData.title}
+            <span class="category-icon">${escapeHtmlValue(categoryData.icon)}</span>
+            ${escapeHtmlValue(categoryData.title)}
           </h2>
-          <p class="category-description">${categoryData.description}</p>
+          <p class="category-description">${escapeHtmlValue(categoryData.description)}</p>
         </div>
-        ${categoryData.projects.map(project => renderProjectCard(project, key)).join('')}
+        ${(categoryData.projects || []).map(project => renderProjectCard(project, key)).join('')}
       </section>
     `).join('');
   
@@ -335,19 +486,20 @@ function renderProjectCard(project, categoryKey) {
     custom: { icon: '🔗', class: 'btn-custom', defaultLabel: 'View Link' }
   };
   
-  const techBadges = project.techStack.map(tech => 
-    `<span class="tech-badge">${tech}</span>`
+  const projectTags = getProjectTags(project);
+  const techBadges = projectTags.map(tag =>
+    `<span class="tech-badge">${escapeHtmlValue(tag)}</span>`
   ).join('');
   
   // Render links using the new array structure
-  const linksHTML = project.links.map(link => {
+  const linksHTML = (project.links || []).map(link => {
     const config = linkTypeConfig[link.type] || linkTypeConfig.custom;
     const label = link.label || config.defaultLabel;
     
     return `
-      <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="project-btn ${config.class}">
+      <a href="${escapeAttribute(link.url)}" target="_blank" rel="noopener noreferrer" class="project-btn ${config.class}">
         <span class="btn-icon">${config.icon}</span>
-        <span>${label}</span>
+        <span>${escapeHtmlValue(label)}</span>
       </a>
     `;
   }).join('');
@@ -358,7 +510,7 @@ function renderProjectCard(project, categoryKey) {
     if (project.media.type === 'image') {
       mediaHtml = `
         <div class="project-media">
-          <img src="${project.media.url}" alt="${project.title}" loading="lazy" />
+          <img src="${escapeAttribute(project.media.url)}" alt="${escapeAttribute(project.title)}" loading="lazy" />
         </div>
       `;
     } else if (project.media.type === 'youtube') {
@@ -366,8 +518,8 @@ function renderProjectCard(project, categoryKey) {
         <div class="project-media">
           <div class="project-media-video">
             <iframe 
-              src="${project.media.url}" 
-              title="${project.title} video"
+                src="${escapeAttribute(project.media.url)}"
+                title="${escapeAttribute(project.title)} video"
               frameborder="0" 
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
               allowfullscreen
@@ -378,21 +530,21 @@ function renderProjectCard(project, categoryKey) {
       `;
     }
   }
-  
+
   return `
-    <article id="project-${project.id}" class="project-detail" data-category="${categoryKey}">
+    <article id="project-${escapeAttribute(project.id)}" class="project-detail" data-category="${escapeAttribute(categoryKey)}">
       <div class="project-header">
         <div class="project-icon">
-          <img src="${project.icon}" alt="${project.title} Icon" />
+          <img src="${escapeAttribute(project.icon)}" alt="${escapeAttribute(project.title)} Icon" />
         </div>
         <div class="project-title-group">
-          <h3>${project.title}</h3>
-          <p class="project-subtitle">${project.subtitle}</p>
+          <h3>${escapeHtmlValue(project.title)}</h3>
+          <p class="project-subtitle">${escapeHtmlValue(project.subtitle)}</p>
         </div>
       </div>
       
       <div class="project-content">
-        <p class="project-description">${project.description}</p>
+        <p class="project-description">${escapeHtmlValue(project.description || project.subtitle || '')}</p>
         
         ${mediaHtml}
         
@@ -402,7 +554,7 @@ function renderProjectCard(project, categoryKey) {
         
         <div class="project-links">
           ${linksHTML}
-          <a href="project.html?id=${project.id}" class="project-btn btn-view-details">
+          <a href="project.html?id=${encodeURIComponent(project.id)}" class="project-btn btn-view-details">
             <span class="btn-icon">📖</span>
             <span>View Full Details</span>
           </a>
@@ -415,7 +567,7 @@ function renderProjectCard(project, categoryKey) {
 function initializeProjectFiltering() {
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projectCategories = document.querySelectorAll('.project-category');
-  
+
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const categoryKey = btn.dataset.category;
@@ -471,11 +623,6 @@ if (document.readyState === 'loading') {
 function initializePage() {
   // Initialize mobile navigation
   initializeMobileNav();
-  
-  // Initialize project detail page if on that page
-  if (window.location.pathname.includes('project.html')) {
-    renderProjectDetailPage();
-  }
 }
 
 // ========================================
@@ -534,7 +681,9 @@ function initializeMobileNav() {
 // PROJECT DETAIL PAGE RENDERING
 // ========================================
 
-function renderProjectDetailPage() {
+async function renderProjectDetailPage() {
+  await loadPortfolioData();
+
   // Get project ID from URL parameter
   const urlParams = new URLSearchParams(window.location.search);
   const projectId = urlParams.get('id');
@@ -573,15 +722,9 @@ function renderProjectDetailPage() {
   renderProjectLinks(project);
   
   
-  // Render description or sections (Rich Content System)
+  // Render Markdown content from /projects/*.md
   const descriptionElement = document.getElementById('project-description');
-  if (project.sections && project.sections.length > 0) {
-    // نظام المحتوى الغني الجديد
-    renderProjectSections(project.sections, descriptionElement);
-  } else {
-    // التوافق مع النظام القديم (Fallback)
-    descriptionElement.innerHTML = project.fullDescription || project.description;
-  }
+  await renderProjectMarkdown(project, descriptionElement);
   
   // Render gallery (if exists)
   if (project.gallery && project.gallery.length > 0) {
@@ -593,8 +736,8 @@ function renderProjectDetailPage() {
     renderProjectFeatures(project.features);
   }
   
-  // Render tech stack
-  renderProjectTechStack(project.techStack);
+  // Render tags / tech stack
+  renderProjectTechStack(getProjectTags(project));
   
   // Render challenges and learnings (if exist)
   renderProjectInsights(project);
@@ -610,21 +753,30 @@ function renderProjectDetailPage() {
 function renderProjectMeta(project) {
   const metaContainer = document.getElementById('project-meta');
   const metaItems = [];
+  const projectTags = getProjectTags(project);
+
+  if (project.date) {
+    metaItems.push(`<div class="meta-item"><strong>Date:</strong> ${escapeHtmlValue(project.date)}</div>`);
+  }
   
   if (project.duration) {
-    metaItems.push(`<div class="meta-item"><strong>Duration:</strong> ${project.duration}</div>`);
+    metaItems.push(`<div class="meta-item"><strong>Duration:</strong> ${escapeHtmlValue(project.duration)}</div>`);
   }
   
   if (project.role) {
-    metaItems.push(`<div class="meta-item"><strong>Role:</strong> ${project.role}</div>`);
+    metaItems.push(`<div class="meta-item"><strong>Role:</strong> ${escapeHtmlValue(project.role)}</div>`);
   }
   
   if (project.teamSize) {
-    metaItems.push(`<div class="meta-item"><strong>Team:</strong> ${project.teamSize}</div>`);
+    metaItems.push(`<div class="meta-item"><strong>Team:</strong> ${escapeHtmlValue(project.teamSize)}</div>`);
   }
   
   if (project.status) {
-    metaItems.push(`<div class="meta-item"><strong>Status:</strong> ${project.status}</div>`);
+    metaItems.push(`<div class="meta-item"><strong>Status:</strong> ${escapeHtmlValue(project.status)}</div>`);
+  }
+
+  if (projectTags.length > 0) {
+    metaItems.push(`<div class="meta-item"><strong>Tags:</strong> ${projectTags.map(escapeHtmlValue).join(', ')}</div>`);
   }
   
   if (metaItems.length > 0) {
@@ -649,14 +801,14 @@ function renderProjectLinks(project) {
     custom: { icon: '🔗', class: 'btn-custom', defaultLabel: 'View Link' }
   };
   
-  linksContainer.innerHTML = project.links.map(link => {
+  linksContainer.innerHTML = (project.links || []).map(link => {
     const config = linkTypeConfig[link.type] || linkTypeConfig.custom;
     const label = link.label || config.defaultLabel;
     
     return `
-      <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="project-btn ${config.class}">
+      <a href="${escapeAttribute(link.url)}" target="_blank" rel="noopener noreferrer" class="project-btn ${config.class}">
         <span class="btn-icon">${config.icon}</span>
-        <span>${label}</span>
+        <span>${escapeHtmlValue(label)}</span>
       </a>
     `;
   }).join('');
@@ -706,11 +858,11 @@ function renderProjectFeatures(features) {
   featuresSection.style.display = 'block';
 }
 
-function renderProjectTechStack(techStack) {
+function renderProjectTechStack(techStack = []) {
   const techStackContainer = document.getElementById('project-tech-stack');
   
   techStackContainer.innerHTML = techStack.map(tech =>
-    `<span class="tech-badge">${tech}</span>`
+    `<span class="tech-badge">${escapeHtmlValue(tech)}</span>`
   ).join('');
 }
 
@@ -738,7 +890,7 @@ function renderProjectInsights(project) {
 }
 
 function setupProjectNavigation(currentProjectId) {
-  // الخطوة 1: جلب جميع المشاريع من data.js
+  // الخطوة 1: جلب جميع المشاريع من البيانات المحملة
   const allProjects = getAllProjects();
   
   // الخطوة 2: البحث عن index المشروع الحالي في المصفوفة
@@ -840,13 +992,8 @@ function renderHeading(section) {
  */
 function renderText(section) {
   const p = document.createElement('div');
-  // Convert Markdown to HTML if marked is available
-  if (typeof marked !== 'undefined' && section.value) {
-    p.innerHTML = marked.parse(section.value);
-  } else {
-    p.textContent = section.value;
-  }
-  p.className = 'section-text';
+  p.innerHTML = renderSafeMarkdown(section.value);
+  p.className = 'section-text markdown-content';
   return p;
 }
 
@@ -951,4 +1098,3 @@ function renderCode(section) {
   
   return container;
 }
-

@@ -28,6 +28,7 @@
   
   <!-- Marked.js for Markdown Support -->
   <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
   
   <style>
     /* Additional styles for new features */
@@ -302,6 +303,24 @@
       color: #2563eb;
       text-decoration: none;
     }
+
+    .markdown-export-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .markdown-export-card .output-header {
+      background: #f8fafc;
+      padding: 0.75rem 1rem;
+    }
+
+    .markdown-export-card pre {
+      max-height: 320px;
+      overflow: auto;
+      margin: 0;
+    }
   </style>
 </head>
 <body class="dashboard-body">
@@ -368,14 +387,14 @@
       <section id="section-import" class="dashboard-section active">
         <div class="section-header">
           <h2>📥 Import Data</h2>
-          <p>Paste the content of your data.js file to start editing</p>
+          <p>Paste the content of your data.json file to start editing</p>
         </div>
         
         <div class="import-area">
-          <label for="data-import">Paste your data.js content below:</label>
+          <label for="data-import">Paste your data.json content below:</label>
           <textarea 
             id="data-import" 
-            placeholder="Paste the entire portfolioData object here...&#10;&#10;const portfolioData = {&#10;  personal: { ... },&#10;  timeline: [ ... ],&#10;  categories: [ ... ]&#10;};"
+            placeholder="Paste the full JSON object here...&#10;&#10;{&#10;  &quot;personal&quot;: { ... },&#10;  &quot;projectCategories&quot;: { ... },&#10;  &quot;timeline&quot;: [ ... ],&#10;  &quot;categories&quot;: { ... }&#10;}"
             rows="15"
           ></textarea>
           
@@ -554,11 +573,21 @@
                     <label>Subtitle</label>
                     <input type="text" id="project-subtitle" placeholder="Brief description" oninput="updatePreview()">
                   </div>
-                  
+
+                  <div class="form-group">
+                    <label>Date</label>
+                    <input type="text" id="project-date" placeholder="2026" oninput="updatePreview()">
+                  </div>
+
                   <div class="form-group full-width">
-                    <label>Project Description (Markdown Supported) 📝</label>
+                    <label>Short Summary</label>
+                    <textarea id="project-summary" rows="3" placeholder="Short card/meta summary for this project..."></textarea>
+                  </div>
+                   
+                  <div class="form-group full-width">
+                    <label>Markdown Content File 📝</label>
                     <small style="color: #888; display: block; margin-bottom: 0.5rem;">
-                      <strong>Markdown Tips:</strong> **bold** | *italic* | # Heading | - List | [Link](url) | ![Image](url) | ```code```
+                      This content will be exported as <strong>projects/&lt;project-id&gt;.md</strong>. Markdown Tips: **bold** | *italic* | # Heading | - List | [Link](url) | ![Image](url) | ```code```
                     </small>
                     <textarea 
                       id="project-description" 
@@ -613,7 +642,7 @@ Share your learnings and insights..."
                 </div>
                 
                 <!-- Tech Stack -->
-                <h4>Tech Stack</h4>
+                <h4>Tags / Tech Stack</h4>
                 <div class="array-input-group">
                   <input type="text" id="project-tech-input" placeholder="Technology">
                   <button class="btn-add" onclick="addProjectTech()">+ Add</button>
@@ -641,7 +670,7 @@ Share your learnings and insights..."
                 <!-- Sections (Rich Content) -->
                 <h4>Content Sections (Optional)</h4>
                 <small style="display: block; margin-bottom: 1rem; color: #888;">
-                  💡 Tip: Use the main Description field above for all content. These sections are optional for advanced layouts.
+                  💡 Tip: Use the Markdown Content field above for all content. These sections are optional for advanced layouts.
                 </small>
                 <div class="section-type-selector">
                   <button class="btn-section-small" onclick="showProjectSectionForm('heading')">📌 Heading</button>
@@ -661,7 +690,7 @@ Share your learnings and insights..."
                   <small>See your content as it will appear</small>
                 </div>
                 <div id="project-preview-content" class="preview-content rich-content">
-                  <p class="empty-state">Add sections to see preview...</p>
+                  <p class="empty-state">Add Markdown content to see preview...</p>
                 </div>
               </div>
             </div>
@@ -772,20 +801,25 @@ Share your learnings and insights..."
       <section id="section-export" class="dashboard-section">
         <div class="section-header">
           <h2>📤 Export Code</h2>
-          <p>Generate your updated data.js file</p>
+          <p>Generate metadata JSON and Markdown files for GitHub Pages</p>
         </div>
         
         <div class="export-area">
           <button class="btn-primary btn-large" onclick="generateDataJS()">
-            🚀 Generate data.js Code
+            🚀 Generate data.json + Markdown Files
           </button>
           
           <div id="export-output" class="code-output" style="display: none;">
             <div class="output-header">
-              <h3>Generated Code</h3>
-              <button class="btn-copy" onclick="copyExportCode()">📋 Copy to Clipboard</button>
+              <h3>Generated data.json</h3>
+              <div>
+                <button class="btn-copy" onclick="copyExportCode()">📋 Copy JSON</button>
+                <button class="btn-copy" onclick="downloadExportFile(encodeURIComponent('data.json'))">Download JSON</button>
+              </div>
             </div>
             <pre id="export-code"><code></code></pre>
+            <h3 style="margin-top: 2rem;">Generated Markdown Files</h3>
+            <div id="markdown-files-output"></div>
           </div>
         </div>
       </section>

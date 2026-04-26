@@ -8,8 +8,11 @@ let dashboardData = {
   personal: {},
   timeline: [],
   projectCategories: {},
-  categoryTags: {}
+  categoryTags: {},
+  projectMarkdownFiles: {}
 };
+
+let latestExportFiles = {};
 
 let currentProject = {
   techStack: [],
@@ -62,12 +65,12 @@ function switchSection(sectionName) {
 // IMPORT DATA
 // ========================================
 
-function importData() {
+async function importData() {
   const importText = document.getElementById('data-import').value.trim();
   const statusEl = document.getElementById('import-status');
   
   if (!importText) {
-    showStatus(statusEl, 'Please paste your data.js content first', 'error');
+    showStatus(statusEl, 'Please paste your data.json content first', 'error');
     return;
   }
   
@@ -85,6 +88,9 @@ function importData() {
     dashboardData.timeline = JSON.parse(JSON.stringify(data.timeline));
     dashboardData.projectCategories = JSON.parse(JSON.stringify(data.projectCategories || {}));
     dashboardData.categoryTags = JSON.parse(JSON.stringify(data.categories || {}));
+    dashboardData.projectMarkdownFiles = JSON.parse(JSON.stringify(data.projectMarkdownFiles || {}));
+    migrateProjectContent();
+    await loadMarkdownFilesForProjects();
     
     // Populate forms
     populateAboutForm();
@@ -105,43 +111,70 @@ function importData() {
   }
 }
 
-// Smart parser that handles JavaScript code
+// Smart parser that handles JSON and older data.js exports without eval.
 function smartParseData(input) {
-  let dataString = input;
+  let dataString = input.trim();
   
-  // Remove 'const portfolioData = ' if present
   if (dataString.includes('const portfolioData')) {
     dataString = dataString.split('const portfolioData =')[1];
-  }
-  
-  // Remove trailing semicolons and whitespace
-  dataString = dataString.trim().replace(/;$/, '');
-  
-  // Try standard JSON parse first
-  try {
-    return JSON.parse(dataString);
-  } catch (jsonError) {
-    // JSON failed, try JavaScript eval
-    try {
-      // Fix common issues: Remove trailing commas before } or ]
-      dataString = dataString.replace(/,(\\s*[}\\]])/g, '$1');
-      
-      // Try eval (works with JavaScript object notation)
-      const result = eval('(' + dataString + ')');
-      return result;
-    } catch (evalError) {
-      throw new Error(`Unable to parse data. ${jsonError.message}`);
+    const objectEndIndex = findJsonObjectEnd(dataString);
+    if (objectEndIndex !== -1) {
+      dataString = dataString.slice(0, objectEndIndex + 1);
     }
   }
+  
+  dataString = dataString.trim().replace(/;$/, '').replace(/,(\s*[}\]])/g, '$1');
+  
+  return JSON.parse(dataString);
 }
 
-function loadSampleData() {
-  // Load from the global portfolioData variable (from data.js)
-  if (typeof portfolioData !== 'undefined') {
+function findJsonObjectEnd(value) {
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+
+  for (let index = 0; index < value.length; index++) {
+    const character = value[index];
+
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+
+    if (character === '\\') {
+      escaped = true;
+      continue;
+    }
+
+    if (character === '"') {
+      inString = !inString;
+      continue;
+    }
+
+    if (inString) continue;
+
+    if (character === '{') depth++;
+    if (character === '}') depth--;
+
+    if (depth === 0 && character === '}') {
+      return index;
+    }
+  }
+
+  return -1;
+}
+
+async function loadSampleData() {
+  // Load from the global portfolioData variable (from data.json via data.js)
+  if (typeof loadPortfolioData !== 'undefined') {
+    await loadPortfolioData();
     dashboardData.personal = JSON.parse(JSON.stringify(portfolioData.personal));
     dashboardData.timeline = JSON.parse(JSON.stringify(portfolioData.timeline));
     dashboardData.projectCategories = JSON.parse(JSON.stringify(portfolioData.projectCategories || {}));
     dashboardData.categoryTags = JSON.parse(JSON.stringify(portfolioData.categories || {}));
+    dashboardData.projectMarkdownFiles = {};
+    migrateProjectContent();
+    await loadMarkdownFilesForProjects();
     
     populateAboutForm();
     renderTimelineList();
@@ -150,11 +183,106 @@ function loadSampleData() {
     renderTagsList();
     
     const statusEl = document.getElementById('import-status');
-    showStatus(statusEl, '✓ Sample data loaded from data.js!', 'success');
+    showStatus(statusEl, '✓ Sample data loaded from data.json!', 'success');
     saveToLocalStorage();
     
     setTimeout(() => switchSection('about'), 1000);
   }
+}
+
+function ensureProjectMarkdownStore() {
+  if (!dashboardData.projectMarkdownFiles) {
+    dashboardData.projectMarkdownFiles = {};
+  }
+}
+
+function getDashboardProjects() {
+  return Object.values(dashboardData.projectCategories || {}).flatMap(category => category.projects || []);
+}
+
+function getMarkdownPathForProjectId(projectId) {
+  return `projects/${slugifyProjectId(projectId)}.md`;
+}
+
+function slugifyProjectId(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'project';
+}
+
+function isSafeDashboardMarkdownPath(path) {
+  return /^projects\/[a-z0-9][a-z0-9-]*\.md$/i.test(path || '');
+}
+
+function migrateProjectContent() {
+  ensureProjectMarkdownStore();
+
+  Object.values(dashboardData.projectCategories || {}).forEach(category => {
+    category.projects = (category.projects || []).map(project => {
+      const migratedProject = { ...project };
+      const existingMarkdown = dashboardData.projectMarkdownFiles[migratedProject.id];
+      const sectionMarkdown = sectionsToMarkdown(migratedProject.sections || []);
+      const inlineMarkdown = migratedProject.markdownContent || migratedProject.fullDescription || sectionMarkdown;
+
+      if (existingMarkdown || inlineMarkdown) {
+        dashboardData.projectMarkdownFiles[migratedProject.id] = existingMarkdown || inlineMarkdown;
+      } else if (looksLikeFullMarkdown(migratedProject.description)) {
+        dashboardData.projectMarkdownFiles[migratedProject.id] = migratedProject.description;
+        migratedProject.description = createSummaryFromMarkdown(migratedProject.description);
+      }
+
+      migratedProject.tags = migratedProject.tags || migratedProject.techStack || [];
+      migratedProject.markdownPath = isSafeDashboardMarkdownPath(migratedProject.markdownPath)
+        ? migratedProject.markdownPath
+        : getMarkdownPathForProjectId(migratedProject.id);
+
+      delete migratedProject.techStack;
+      delete migratedProject.sections;
+      delete migratedProject.fullDescription;
+      delete migratedProject.markdownContent;
+
+      return migratedProject;
+    });
+  });
+}
+
+async function loadMarkdownFilesForProjects() {
+  ensureProjectMarkdownStore();
+
+  await Promise.all(getDashboardProjects().map(async project => {
+    if (dashboardData.projectMarkdownFiles[project.id] || !isSafeDashboardMarkdownPath(project.markdownPath)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(project.markdownPath);
+      if (response.ok) {
+        dashboardData.projectMarkdownFiles[project.id] = await response.text();
+      }
+    } catch (error) {
+      console.warn(`Could not load ${project.markdownPath}. It will be generated on export.`, error);
+    }
+  }));
+}
+
+function looksLikeFullMarkdown(value) {
+  const text = String(value || '');
+  return text.length > 300 && /\n|#{1,6}\s|```|-\s|\[.+\]\(.+\)/.test(text);
+}
+
+function createSummaryFromMarkdown(markdown) {
+  const plainText = String(markdown || '')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/[#*_>`-]/g, '')
+    .split(/\n{2,}/)
+    .map(paragraph => paragraph.trim())
+    .find(Boolean) || '';
+
+  return plainText.length > 220 ? `${plainText.slice(0, 217)}...` : plainText;
 }
 
 function showStatus(element, message, type) {
@@ -346,7 +474,8 @@ function renderProjectsList() {
             <div class="item-header">
               <div>
                 <div class="item-title">${project.title}</div>
-                <div class="item-meta">${project.subtitle}</div>
+                <div class="item-meta">${project.subtitle || ''}${project.date ? ` • ${project.date}` : ''}</div>
+                <div class="item-meta">${project.markdownPath || getMarkdownPathForProjectId(project.id)}</div>
               </div>
               <div class="item-actions">
                 <button class="btn-icon" onclick="editProject('${categoryKey}', ${projIndex})" title="Edit">✏️</button>
@@ -354,7 +483,7 @@ function renderProjectsList() {
               </div>
             </div>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem;">
-              ${(project.techStack || []).map(tech => `<span class="tag">${tech}</span>`).join('')}
+              ${(project.tags || project.techStack || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
             </div>
           </div>
         `).join('')}
@@ -382,11 +511,13 @@ function editProject(categoryKey, projIndex) {
   document.getElementById('project-id').value = project.id;
   document.getElementById('project-title').value = project.title;
   document.getElementById('project-subtitle').value = project.subtitle;
-  document.getElementById('project-description').value = project.description || '';
+  document.getElementById('project-date').value = project.date || '';
+  document.getElementById('project-summary').value = project.description || project.summary || '';
+  document.getElementById('project-description').value = getProjectMarkdownContent(project);
   document.getElementById('project-icon').value = project.icon || '';
   
   // Load arrays
-  currentProject.techStack = [...(project.techStack || [])];
+  currentProject.techStack = [...(project.tags || project.techStack || [])];
   currentProject.links = JSON.parse(JSON.stringify(project.links || []));
   currentProject.sections = JSON.parse(JSON.stringify(project.sections || []));
   
@@ -433,6 +564,8 @@ function clearProjectForm() {
   document.getElementById('project-id').value = '';
   document.getElementById('project-title').value = '';
   document.getElementById('project-subtitle').value = '';
+  document.getElementById('project-date').value = '';
+  document.getElementById('project-summary').value = '';
   document.getElementById('project-description').value = '';
   document.getElementById('project-icon').value = '';
   
@@ -1049,9 +1182,13 @@ function renderProjectSectionsList() {
 function updatePreview() {
   const previewContent = document.getElementById('project-preview-content');
   if (!previewContent) return;
+
+  const markdownContent = document.getElementById('project-description')?.value.trim() || '';
   
   if (currentProject.sections.length === 0) {
-    previewContent.innerHTML = '<p class="empty-state">Add sections to see preview...</p>';
+    previewContent.innerHTML = markdownContent
+      ? renderSafeMarkdown(markdownContent)
+      : '<p class="empty-state">Add Markdown content to see preview...</p>';
     return;
   }
   
@@ -1068,16 +1205,7 @@ function updatePreview() {
         if (section.fontSize) textClass += ` font-size-${section.fontSize}`;
         if (section.bold) textClass += ' text-bold';
         if (section.italic) textClass += ' text-italic';
-        // Convert Markdown to HTML for live preview
-        let textContent = section.value || '';
-        if (typeof marked !== 'undefined') {
-          textContent = marked.parse(textContent);
-          html += `<div class="${textClass}">${textContent}</div>`;
-        } else {
-          // Fallback: Convert Markdown links to HTML manually
-          textContent = convertMarkdownLinksToHtml(textContent);
-          html += `<p class="${textClass}">${textContent}</p>`;
-        }
+        html += `<div class="${textClass}">${renderSafeMarkdown(section.value || '')}</div>`;
         break;
         
       case 'list':
@@ -1193,6 +1321,53 @@ function extractYouTubeId(url) {
   return (match && match[2].length === 11) ? match[2] : url;
 }
 
+function getProjectMarkdownContent(project) {
+  ensureProjectMarkdownStore();
+  return dashboardData.projectMarkdownFiles[project.id]
+    || project.markdownContent
+    || project.fullDescription
+    || sectionsToMarkdown(project.sections || [])
+    || '';
+}
+
+function sectionsToMarkdown(sections) {
+  return (sections || [])
+    .map(sectionToMarkdown)
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+function sectionToMarkdown(section) {
+  switch (section.type) {
+    case 'heading':
+      return `${'#'.repeat(section.level || 2)} ${section.value || ''}`;
+    case 'text':
+      return section.value || '';
+    case 'list':
+      return listSectionToMarkdown(section);
+    case 'code':
+      return `\`\`\`${section.language || ''}\n${section.value || ''}\n\`\`\``;
+    case 'image':
+      return `![${section.alt || 'Image'}](${section.src || ''})`;
+    case 'video':
+      return `[Video](${section.src || ''})`;
+    default:
+      return '';
+  }
+}
+
+function listSectionToMarkdown(section) {
+  const items = section.nestedItems && section.nestedItems.length > 0
+    ? section.nestedItems
+    : (section.items || []).map(text => ({ text, level: 0 }));
+
+  return items.map((item, index) => {
+    const level = item.level || 0;
+    const marker = section.ordered ? `${index + 1}.` : '-';
+    return `${'  '.repeat(level)}${marker} ${item.text || item}`;
+  }).join('\n');
+}
+
 // ========================================
 // SAVE PROJECT
 // ========================================
@@ -1201,26 +1376,41 @@ function saveProject() {
   const projectId = document.getElementById('project-id').value.trim();
   const title = document.getElementById('project-title').value.trim();
   const subtitle = document.getElementById('project-subtitle').value.trim();
+  const date = document.getElementById('project-date').value.trim();
+  const summary = document.getElementById('project-summary').value.trim();
   const categoryKey = document.getElementById('project-category-select').value;
   
-  if (!projectId || !title || !subtitle || !categoryKey) {
-    alert('Please fill in all required fields: Project ID, Title, Subtitle, and Category');
+  if (!projectId || !title || !subtitle || !date || !categoryKey) {
+    alert('Please fill in all required fields: Project ID, Title, Subtitle, Date, and Category');
     return;
   }
+
+  ensureProjectMarkdownStore();
+  const markdownContent = document.getElementById('project-description').value.trim() || sectionsToMarkdown(currentProject.sections);
   
   const project = {
     id: projectId,
     title: title,
     subtitle: subtitle,
-    description: document.getElementById('project-description').value,
+    date: date,
+    description: summary,
     icon: document.getElementById('project-icon').value,
-    techStack: [...currentProject.techStack],
-    links: JSON.parse(JSON.stringify(currentProject.links)),
-    sections: JSON.parse(JSON.stringify(currentProject.sections))
+    tags: [...currentProject.techStack],
+    markdownPath: getMarkdownPathForProjectId(projectId),
+    links: JSON.parse(JSON.stringify(currentProject.links))
   };
   
   const editCategory = document.getElementById('project-edit-category').value;
   const editIndex = parseInt(document.getElementById('project-edit-index').value);
+  const previousProject = editIndex >= 0 && editCategory
+    ? dashboardData.projectCategories[editCategory].projects[editIndex]
+    : null;
+
+  dashboardData.projectMarkdownFiles[projectId] = markdownContent || `# ${title}\n\n${summary}`;
+
+  if (previousProject && previousProject.id !== projectId) {
+    delete dashboardData.projectMarkdownFiles[previousProject.id];
+  }
   
   if (editIndex >= 0 && editCategory) {
     // Editing existing project
@@ -1477,74 +1667,123 @@ function updateTagColorPreview() {
 function generateDataJS() {
   const output = document.getElementById('export-output');
   const codeEl = document.getElementById('export-code');
+  const markdownOutput = document.getElementById('markdown-files-output');
   
-  // Build the complete data structure
-  const exportData = {
-    personal: dashboardData.personal,
-    projectCategories: dashboardData.projectCategories,
-    timeline: dashboardData.timeline,
-    categories: dashboardData.categoryTags
+  const exportData = buildExportData();
+  const json = JSON.stringify(exportData, null, 2);
+  const markdownFiles = buildMarkdownExportFiles(exportData);
+
+  latestExportFiles = {
+    'data.json': json
   };
-  
-  // Generate JavaScript code
-  const code = `// ========================================
-// PORTFOLIO DATA - YOUR CENTRALIZED DASHBOARD
-// ========================================
-// This file contains ALL your portfolio content in one place.
-// Generated by Portfolio Dashboard
 
-const portfolioData = ${JSON.stringify(exportData, null, 2)};
+  markdownFiles.forEach(file => {
+    latestExportFiles[file.path] = file.content;
+  });
 
-// ========================================
-// HELPER FUNCTIONS
-// ========================================
+  codeEl.textContent = json;
 
-// Get all projects from all categories as a flat array
-function getAllProjects() {
-  const categories = portfolioData.projectCategories;
-  return Object.values(categories).flatMap(cat => cat.projects);
-}
+  if (markdownOutput) {
+    markdownOutput.innerHTML = markdownFiles.map(file => {
+      const encodedPath = encodeURIComponent(file.path);
+      return `
+        <div class="markdown-export-card">
+          <div class="output-header">
+            <h4>${escapeHtml(file.path)}</h4>
+            <div>
+              <button class="btn-copy" onclick="copyExportFile('${encodedPath}')">Copy</button>
+              <button class="btn-copy" onclick="downloadExportFile('${encodedPath}')">Download</button>
+            </div>
+          </div>
+          <pre><code>${escapeHtml(file.content)}</code></pre>
+        </div>
+      `;
+    }).join('');
+  }
 
-// Get project by ID (searches across all categories)
-function getProjectById(projectId) {
-  return getAllProjects().find(p => p.id === projectId);
-}
-
-// Get projects by category key
-function getProjectsByCategory(categoryKey) {
-  if (categoryKey === 'all') return getAllProjects();
-  return portfolioData.projectCategories[categoryKey]?.projects || [];
-}
-
-// Get timeline events by category
-function getTimelineByCategory(category) {
-  return portfolioData.timeline.filter(e => e.category === category);
-}
-
-// Generate project link for timeline
-function getProjectLink(projectId) {
-  const project = getProjectById(projectId);
-  if (!project) return null;
-  return {
-    url: \`project.html?id=\${projectId}\`,
-    title: project.title
-  };
-}`;
-  
-  codeEl.textContent = code;
   output.style.display = 'block';
   output.scrollIntoView({ behavior: 'smooth' });
 }
 
+function buildExportData() {
+  const projectCategories = JSON.parse(JSON.stringify(dashboardData.projectCategories || {}));
+
+  Object.values(projectCategories).forEach(category => {
+    category.projects = (category.projects || []).map(project => ({
+      id: project.id,
+      title: project.title,
+      subtitle: project.subtitle || '',
+      date: project.date || '',
+      description: project.description || '',
+      icon: project.icon || '',
+      tags: project.tags || project.techStack || [],
+      markdownPath: isSafeDashboardMarkdownPath(project.markdownPath)
+        ? project.markdownPath
+        : getMarkdownPathForProjectId(project.id),
+      links: project.links || []
+    }));
+  });
+
+  return {
+    personal: dashboardData.personal,
+    projectCategories,
+    timeline: dashboardData.timeline,
+    categories: dashboardData.categoryTags
+  };
+}
+
+function buildMarkdownExportFiles(exportData) {
+  ensureProjectMarkdownStore();
+
+  return Object.values(exportData.projectCategories || {})
+    .flatMap(category => category.projects || [])
+    .map(project => ({
+      path: project.markdownPath,
+      content: dashboardData.projectMarkdownFiles[project.id] || `# ${project.title}\n\n${project.description || ''}`
+    }));
+}
+
 function copyExportCode() {
-  const codeEl = document.getElementById('export-code');
+  copyExportFile(encodeURIComponent('data.json'));
+}
+
+function copyExportFile(encodedName) {
+  const fileName = decodeURIComponent(encodedName);
+  const content = latestExportFiles[fileName];
+
+  if (content === undefined) {
+    alert('Generate the export first.');
+    return;
+  }
+
   const textArea = document.createElement('textarea');
-  textArea.value = codeEl.textContent;
+  textArea.value = content;
   document.body.appendChild(textArea);
   textArea.select();
   document.execCommand('copy');
   document.body.removeChild(textArea);
-  alert('✓ Code copied to clipboard!');
+  alert(`✓ ${fileName} copied to clipboard!`);
+}
+
+function downloadExportFile(encodedName) {
+  const fileName = decodeURIComponent(encodedName);
+  const content = latestExportFiles[fileName];
+
+  if (content === undefined) {
+    alert('Generate the export first.');
+    return;
+  }
+
+  const type = fileName.endsWith('.json') ? 'application/json' : 'text/markdown';
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName.split('/').pop();
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
 
 // ========================================
@@ -1582,6 +1821,8 @@ function loadFromLocalStorage() {
     const saved = localStorage.getItem('dashboardData');
     if (saved) {
       dashboardData = JSON.parse(saved);
+      ensureProjectMarkdownStore();
+      migrateProjectContent();
       populateAboutForm();
       renderTimelineList();
       renderProjectsList();

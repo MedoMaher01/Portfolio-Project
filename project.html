@@ -53,6 +53,7 @@
     
     <!-- Marked.js for Markdown Support -->
     <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
     
     <!-- Data & Rendering Scripts -->
     <script src="data.js"></script>
@@ -182,19 +183,10 @@
     
     <!-- Project Loading Script -->
     <script>
-      // Load and render the project dynamically
-      const urlParams = new URLSearchParams(window.location.search);
-      const projectId = urlParams.get('project');
-      
-      if (projectId) {
-        renderProject(projectId);
-      } else {
-        document.getElementById('project-title').textContent = 'Project Not Found';
-      }
-
-      // Initialize Mobile Menu
-      initializeMobileNav();
-      
+      document.addEventListener('DOMContentLoaded', () => {
+        renderProjectDetailPage();
+        initializeMobileNav();
+      });
     </script>
   </body>
 </html>

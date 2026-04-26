@@ -1,0 +1,171 @@
+{
+  "personal": {
+    "name": "Ahmed Maher",
+    "profession": "Computer Science Student & Systems Tinkerer",
+    "tagline": "Repurposing Legacy Hardware & Exploring System Security",
+    "background": "Linux Enthusiast | Hardware Revivalist | Security Researcher",
+    "bio": "I’m the kind of person who can’t see a piece of old tech without wondering how to bring it back to life. My journey started with 'modding' a school tablet and fixing family phones, and it led me to building full-scale home servers from what others called 'junk' hardware.\n\nCurrently a 3rd-year Computer Science student at HTI, I refuse to be boxed into a single 'track.' I dive into Backend, explore Cyber Security, and mess around with Video Editing. To me, it’s not about the title; it’s about solving problems and understanding how technology works under the hood. If a system needs a workaround or an idea needs to be executed smartly and on a budget—I’m the one for the job.",
+    "logo": "Image/Logo Without BG.png",
+    "profileImage": "Image/Portfolio img.jpg",
+    "email": "anshtaun00@gmail.com",
+    "github": "MedoMaher01",
+    "linkedin": "x0maro",
+    "siteUrl": "https://medomaher01.github.io/Portfolio-Project/index.html",
+    "description": "Professional portfolio of Ahmed Maher, a passionate Software Developer specializing in Full-Stack Development & Web Solutions.",
+    "keywords": "portfolio, web developer, projects, Ahmed Maher, Software Developer, Full-Stack Development"
+  },
+  "projectCategories": {
+    "system-architecture": {
+      "title": "System Architecture",
+      "icon": "💻",
+      "description": "Reviving old hardware, building home servers, and Linux system administration.",
+      "projects": [
+        {
+          "id": "project-phoenix-homelab",
+          "title": "Project Phoenix: Transforming Old Android into a Linux Home Server",
+          "subtitle": "An engineering experiment to upcycle e-waste into a fully functional 24/7 Home Lab & NAS",
+          "date": "2026",
+          "description": "Instead of throwing away my old Android tablet, I decided to challenge myself: Can this become a real server? I rooted the device, replaced the Android restrictions with a full Linux environment (Ubuntu), and built a complete Home Lab.",
+          "icon": "Image/logo Project Phoenix.png",
+          "tags": [
+            "Linux Administration",
+            "Bash Scripting",
+            "Networking (DNS & VPN)",
+            "Docker / Containers",
+            "AdGuard Home",
+            "Samba (NAS)",
+            "Apache Web Server",
+            "HTML/CSS/JS (Dashboard)"
+          ],
+          "markdownPath": "projects/project-phoenix-homelab.md",
+          "links": []
+        }
+      ]
+    },
+    "cyber-security": {
+      "title": "Cyber Security",
+      "icon": "🛡️",
+      "description": "Documenting TryHackMe challenges, Kali Linux experiments, and system vulnerability research.",
+      "projects": []
+    },
+    "software-dev": {
+      "title": "Software Development",
+      "icon": "🚀",
+      "description": "Building projects with C++ and Python, focusing on clean code and core fundamentals.",
+      "projects": [
+        {
+          "id": "web-portfolio",
+          "title": "Personal Portfolio Website",
+          "subtitle": "Responsive portfolio showcasing skills and projects",
+          "date": "2026",
+          "description": "A modern, fully responsive portfolio website built from scratch using HTML5, CSS3, and vanilla JavaScript.",
+          "icon": "Image/Logo.png",
+          "tags": [
+            "HTML5",
+            "CSS3",
+            "JavaScript",
+            "Responsive Design",
+            "SEO"
+          ],
+          "markdownPath": "projects/web-portfolio.md",
+          "links": [
+            {
+              "type": "github",
+              "url": "https://github.com/MedoMaher01/Portfolio-Project",
+              "label": "View Code"
+            },
+            {
+              "type": "demo",
+              "url": "https://medomaher01.github.io/Portfolio-Project/index.html",
+              "label": "Live Demo"
+            }
+          ]
+        }
+      ]
+    },
+    "mobile-modding": {
+      "title": "Mobile Modding",
+      "icon": "📱",
+      "description": "Hardware repairs, custom ROMs, and advanced Android automation via Termux.",
+      "projects": []
+    },
+    "innovation": {
+      "title": "Business & Innovation",
+      "icon": "💡",
+      "description": "Exploring entrepreneurship and digital transformation through programs like innovEgypt (ITIDA).",
+      "projects": []
+    },
+    "the-lab": {
+      "title": "The Lab",
+      "icon": "🧪",
+      "description": "A collection of experimental scripts and works-in-progress from my daily tinkering.",
+      "projects": []
+    }
+  },
+  "timeline": [
+    {
+      "date": "2013",
+      "title": "More Than Just Games",
+      "description": "Got my first PC. While everyone was gaming, I was busy asking: \"How does this work? What happens if I change this setting?",
+      "icon": "🖥️",
+      "category": "milestone"
+    },
+    {
+      "date": "2016",
+      "title": "The Digital Window",
+      "description": "Middle school started, and we finally got internet at home. The PC became more than a machine; it was my window to an endless world of learning.",
+      "icon": "🌐",
+      "category": "exploration"
+    },
+    {
+      "date": "2019",
+      "title": "Breaking the System",
+      "description": "In High School, the school tablet was my first real challenge. \"How do I get this out of the restricted system?\" That was my first true taste of hacking and system logic.",
+      "icon": "🔓",
+      "category": "academic"
+    },
+    {
+      "date": "2020",
+      "title": "Linux in My Pocket",
+      "description": "Discovered Termux and managed to run Kali Linux on my phone. It changed my perspective of mobile devices from simple gadgets to powerful programming tools.",
+      "icon": "🐧",
+      "category": "exploration"
+    },
+    {
+      "date": "2022",
+      "title": "Solid Foundations",
+      "description": "Decided to go academic. I started with C++ to understand the low-level fundamentals that separate a 'coder' from a real Engineer.",
+      "icon": "📚",
+      "category": "self-learning"
+    },
+    {
+      "date": "2023 - Present",
+      "title": "The HTI Exploration",
+      "description": "Joined HTI and started a deep dive into everything—Backend, Security, and Entrepreneurship. Certifications from TryHackMe and innovEgypt (ITIDA) are just markers on a path of constant exploration.",
+      "icon": "🚀",
+      "category": "academic"
+    }
+  ],
+  "categories": {
+    "milestone": {
+      "label": "Milestone",
+      "color": "#007bff"
+    },
+    "self-learning": {
+      "label": "Self-Learning",
+      "color": "#28a745"
+    },
+    "academic": {
+      "label": "Academic",
+      "color": "#6f42c1"
+    },
+    "exploration": {
+      "label": "Exploration",
+      "color": "#fd7e14"
+    },
+    "achievement": {
+      "label": "Achievement",
+      "color": "#ffc107"
+    }
+  }
+}
