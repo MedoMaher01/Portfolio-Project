@@ -12,7 +12,7 @@ I wanted to understand Linux networking and server management at a deeper level.
 
 #### My custom-built dashboard running on the tablet server
 
-![alt](image/Screenshot-1.png)
+![alt](/image/screenshot-1.png)
 
 ![alt](/image/screenshot-2.png)
 

@@ -281,6 +281,54 @@ Upload all files via FTP to your web server.
 
 ## 📋 Changelog
 
+## 🆕 Version 1.4.0 (Apr 2026)
+
+**🚀 Major Architecture Upgrade: Static Markdown CMS**
+
+This version introduces a complete redesign of the content system, transforming the portfolio into a more scalable and maintainable static CMS.
+
+### ✨ New Features:
+
+- **Markdown-Based Content System**
+    - Each project now has its own `.md` file inside `/projects/`
+    - Supports rich content (images, code blocks, lists, etc.)
+- **JSON Metadata Layer**
+    - `data.json` now stores only project metadata (title, tags, paths, etc.)
+    - Clean separation between data and content
+- **Dynamic Content Loading**
+    - Projects are loaded via `fetch()` instead of static JS
+    - Markdown files are parsed dynamically using `marked`
+- **Secure Rendering**
+    - Integrated `DOMPurify` to sanitize HTML output
+    - Removed all usage of `eval` (major security improvement)
+
+---
+
+### 🛠️ Improvements:
+
+- Better project scalability (no more huge data.js file)
+- Cleaner architecture and easier maintenance
+- More flexible content editing using Markdown
+- Improved developer experience
+
+---
+
+### 🐛 Fixes:
+
+- Fixed Markdown rendering issues (images, code blocks, formatting)
+- Fixed incorrect relative image paths in `.md` files
+- Fixed styling issues for Markdown content
+- Fixed async loading bugs in project rendering
+
+---
+
+### ⚠️ Breaking Changes:
+
+- `data.js` removed → replaced with `data.json`
+- Requires running the project on a local server (due to fetch API)
+
+---
+
 ### Version 1.3.2 (February 2026)
 
 **🐛 Bug Fixes:**
