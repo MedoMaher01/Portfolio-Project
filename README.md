@@ -12,7 +12,7 @@ A production-ready, **database-free portfolio system** powered by a custom-built
 
 ## 🌟 What Makes This Special?
 
-This is **not just a portfolio website** — it's a complete **Content Management System (CMS)** built from scratch without relying on databases, WordPress, or any backend frameworks. Everything is managed through a custom JavaScript engine that reads and writes to a centralized data structure (`data.js`).
+This is **not just a portfolio website** — it's a complete **Content Management System (CMS)** built from scratch without relying on databases, WordPress, or any backend frameworks. Content is managed through a static `data.json` metadata layer and dedicated Markdown files inside `/projects/`.
 
 **Key Philosophy:**
 - ✅ **Zero Database Dependency** — All data lives in structured JSON
@@ -50,32 +50,45 @@ The `dashboard.html` file serves as your **Master Control Panel** for managing t
 - **Freeform Input** — No restrictions on languages or frameworks
 
 ### 📤 **One-Click Export**
-- **Generate `data.js`** — Export button creates a complete, production-ready data file
-- **Copy & Replace** — Simply paste the exported code into your `data.js` file
+- **Generate `data.json` + Markdown** — Export button creates production-ready metadata and project content files
+- **Copy & Replace** — Update `data.json` and the matching `/projects/*.md` files
 - **Zero Data Loss** — All projects, timeline events, categories, and settings preserved
 
 ---
 
 ## 🏗️ Technical Architecture
 
-### **JSON-Driven Content Engine**
+### **Static JSON + Markdown Content Engine**
 
-All portfolio content is centralized in a single JavaScript file (`data.js`) that acts as the project's "database":
+Portfolio content is split into two static layers: `data.json` stores structured metadata, while each project writeup lives in its own Markdown file inside `/projects/`:
 
-```javascript
-const portfolioData = {
-  personal: { /* Name, bio, contact, social links */ },
-  projectCategories: { /* Organized by domain */ },
-  timeline: [ /* Journey milestones */ ],
-  categories: { /* Timeline category styles */ }
-};
+```json
+{
+  "personal": { "name": "..." },
+  "projectCategories": {
+    "software-dev": {
+      "projects": [
+        {
+          "id": "web-portfolio",
+          "title": "Personal Portfolio Website",
+          "markdownPath": "projects/web-portfolio.md"
+        }
+      ]
+    }
+  },
+  "timeline": [],
+  "categories": {}
+}
 ```
+
+`data.js` now acts as a lightweight loader/helper file. It fetches `data.json`, exposes project lookup helpers, and leaves long-form project content in Markdown.
 
 **Benefits:**
 - 🚀 **Lightning Fast** — No server queries, instant page loads
 - 🔧 **Version Controlled** — Track all content changes via Git
 - 📦 **Portable** — Deploy anywhere (GitHub Pages, Netlify, Vercel)
 - 🔒 **Secure** — No database vulnerabilities
+- 📝 **Scalable Content** — Project details stay readable in standalone Markdown files
 
 ### **Folder Structure**
 
@@ -90,8 +103,10 @@ Portfolio-Project/
 ├── 📜 dashboard.js            # Dashboard logic & rendering engine
 ├── 🎨 dashboard.css           # Dashboard UI styles
 │
-├── 📊 data.js                 # ⭐ Centralized Content Database (JSON)
+├── 📊 data.json               # ⭐ Portfolio metadata
+├── 📊 data.js                 # Static data loader & helper functions
 ├── ⚙️ render.js               # Front-end rendering engine
+├── 📁 projects/               # Markdown project writeups
 │
 ├── 🎨 styles.css              # Main site styles
 ├── 🎨 journey.css             # Timeline-specific styles
@@ -105,17 +120,25 @@ Portfolio-Project/
 
 ### **How It Works**
 
-1. **Data Layer** (`data.js`)  
-   Stores all content in structured JavaScript objects
+1. **Metadata Layer** (`data.json`)
+   Stores personal info, project metadata, categories, links, tags, and Markdown paths
 
-2. **Rendering Engine** (`render.js`)  
-   Dynamically generates HTML from the data structure
+2. **Project Content Layer** (`/projects/*.md`)
+   Stores full project writeups, including headings, lists, code blocks, links, and images
 
-3. **CMS Dashboard** (`dashboard.html` + `dashboard.js`)  
-   Visual editor that modifies and exports `data.js`
+3. **Data Loader** (`data.js`)
+   Loads `data.json` with `fetch()` and provides helper functions for project lookup
 
-4. **Front-End Pages** (`index.html`, `projects.html`, etc.)  
-   Consume data from `data.js` via the rendering engine
+4. **Rendering Engine** (`render.js`)
+   Dynamically generates HTML, fetches matching Markdown files, parses them with `marked`, and sanitizes output with `DOMPurify`
+
+5. **CMS Dashboard** (`dashboard.html` + `dashboard.js`)
+   Visual editor that exports both `data.json` metadata and the matching Markdown files
+
+6. **Front-End Pages** (`index.html`, `projects.html`, etc.)
+   Consume the loaded metadata and rendered Markdown through the rendering engine
+
+> **Important:** Because the site uses `fetch()` to load `data.json` and `/projects/*.md`, run it through a local server or deployed host. Opening pages directly with `file://` will not load dynamic content correctly.
 
 ---
 
@@ -123,9 +146,11 @@ Portfolio-Project/
 
 ### **Step 1: Open the Dashboard**
 ```bash
-# Open dashboard.html in your browser
-open dashboard.html
+# Start a local static server, then open dashboard.html
+python3 -m http.server 8000
 ```
+
+Then visit `http://localhost:8000/dashboard.html` in your browser.
 
 ### **Step 2: Edit Your Content**
 - Navigate through tabs: **About**, **Projects**, **Timeline**, **Categories**, **Tags**
@@ -141,9 +166,9 @@ open dashboard.html
 
 ### **Step 4: Export & Deploy**
 1. Click the **"Export Code"** button in the dashboard
-2. Copy the generated JavaScript code
-3. Replace the contents of `data.js` with the exported code
-4. Refresh your portfolio pages to see changes live
+2. Copy or download the generated `data.json`
+3. Copy or download the generated Markdown files into `/projects/`
+4. Refresh your portfolio pages through your local server to see changes live
 
 **That's it!** No database migrations, no server restarts, no complicated deployments.
 
@@ -163,6 +188,7 @@ open dashboard.html
 | 🔍 **SEO Optimized** | Meta tags, Open Graph, Twitter Cards, structured data |
 | ♿ **Accessibility** | ARIA labels, keyboard navigation, high contrast |
 | 🖼️ **Media Support** | Images, YouTube embeds, video previews |
+| 📝 **Markdown Project Pages** | Project writeups rendered from `/projects/*.md` with safe HTML output |
 
 ### **Advanced Content Types**
 
@@ -173,6 +199,7 @@ Projects support **rich content sections** with:
 - Inline text formatting (bold, italic, font sizes)
 - Embedded images and videos
 - Markdown-style hyperlinks
+- Markdown files parsed with `marked` and sanitized with `DOMPurify`
 
 ---
 
@@ -241,7 +268,7 @@ This architecture is perfect for:
 2. Navigate to **Projects** tab
 3. Click **"Add New Project"**
 4. Fill in details using the rich editor
-5. Export and update `data.js`
+5. Export and update `data.json` plus the generated `/projects/*.md` file
 
 ### **Modifying Timeline**
 1. Go to **Timeline** tab in dashboard
