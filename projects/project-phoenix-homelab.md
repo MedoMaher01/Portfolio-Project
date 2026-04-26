@@ -12,9 +12,9 @@ I wanted to understand Linux networking and server management at a deeper level.
 
 #### My custom-built dashboard running on the tablet server
 
-![Project Phoenix dashboard screenshot](Image/Screenshot  (1).png)
+![Project Phoenix dashboard screenshot](image/Screenshot-1.png)
 
-![Project Phoenix dashboard screenshot](Image/Screenshot  (2).png)
+![Project Phoenix dashboard screenshot](image/Screenshot-2.png)
 
 ```bash
 # Example: Restarting the server services
